@@ -1,0 +1,107 @@
+package shino.config;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import shino.entities.Flight;
+import shino.entities.Planet;
+import shino.entities.Port;
+import shino.entities.Port.PortType;
+import shino.entities.Seat;
+import shino.entities.Seat.SeatType;
+import shino.repositories.FlightRepository;
+import shino.repositories.PlanetRepository;
+import shino.repositories.PortRepository;
+import shino.repositories.SeatRepository;
+
+@Component
+public class DatabaseSeeder implements CommandLineRunner {
+
+    private final FlightRepository flightRepository;
+    private final PortRepository portRepository;
+    private final SeatRepository seatRepository;
+    private final PlanetRepository planetRepository;
+
+    public DatabaseSeeder(FlightRepository flightRepository, PortRepository portRepository, SeatRepository seatRepository, PlanetRepository planetRepository) {
+        this.flightRepository = flightRepository;
+        this.portRepository = portRepository;
+        this.seatRepository = seatRepository;
+        this.planetRepository = planetRepository;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (portRepository.count() == 0) {
+            System.out.println("Seeding relational database with initial data...");
+
+            Planet earth = new Planet("Earth", 6371.0);
+            Planet mars = new Planet("Mars", 3389.5);
+            Planet moon = new Planet("Moon", 1737.4);
+            
+            planetRepository.saveAll(List.of(earth, mars, moon));
+
+            Port kennedy = new Port("KNDUS", "Kennedy Space Center", "United States of America", earth, PortType.PLANETARY, 28.5721, -80.6480, null, null, null);
+            Port vandenberg = new Port("VSFUS", "Vandenberg Space Force Base", "United States of America", earth, PortType.PLANETARY, 34.7420, -120.5724, null, null, null);
+            Port baikonur = new Port("BAIRS", "Baikonur Cosmodrome", "Russia", earth, PortType.PLANETARY, 46.0681, 63.3159, null, null, null);
+            Port wenchang = new Port("WENCN", "Wenchang Spacecraft Launch Site", "China", earth, PortType.PLANETARY, 19.6167, 109.7500, null, null, null);
+            Port guiana = new Port("GUIFR", "Guiana Space Centre", "France", earth, PortType.PLANETARY, 5.2333, -52.7667, null, null, null);
+            Port artemis = new Port("ARTUS", "Artemis Base Station", "United States of America", moon, PortType.PLANETARY, -89.5273, 209.9762, null, null, null);
+            Port lanyue = new Port("LNYCN", "Lanyue Spaceport", "China", moon, PortType.ORBITAL, -84.2512, 60.7011, null, null, null);
+            Port lunar = new Port("LGTWY", "Lunar Gateway", "International", moon, PortType.ORBITAL, null, null, 38200.0, 16000.0, 89.873);
+            Port martian = new Port("MGTWY", "Martian Gateway", "International", mars, PortType.ORBITAL, null, null, 20370.0, 11630.0, 89.981);
+
+            List<Port> allPorts = List.of(kennedy, vandenberg, baikonur, wenchang, guiana, artemis, lanyue, lunar, martian);
+            portRepository.saveAll(allPorts);
+
+            Flight f1 = new Flight("ART-101", kennedy, lunar, LocalDateTime.parse("2026-04-10T08:00"), LocalDateTime.parse("2026-04-13T14:00"), "Scheduled");
+            Flight f2 = new Flight("CNSA-88", wenchang, lunar, LocalDateTime.parse("2026-04-12T09:30"), LocalDateTime.parse("2026-04-15T11:00"), "Scheduled");
+            Flight f3 = new Flight("ESA-202", guiana, lunar, LocalDateTime.parse("2026-05-01T14:00"), LocalDateTime.parse("2026-05-04T18:30"), "In Transit");
+            Flight f4 = new Flight("ROS-77", baikonur, lunar, LocalDateTime.parse("2026-03-20T11:00"), LocalDateTime.parse("2026-03-23T15:00"), "Delayed");
+            Flight f5 = new Flight("CNSA-99", wenchang, lanyue, LocalDateTime.parse("2026-05-10T07:00"), LocalDateTime.parse("2026-05-13T10:00"), "Scheduled");
+            Flight f6 = new Flight("LSH-01", lunar, artemis, LocalDateTime.parse("2026-04-14T08:00"), LocalDateTime.parse("2026-04-14T12:00"), "Scheduled");
+            Flight f7 = new Flight("LSH-02", lunar, lanyue, LocalDateTime.parse("2026-04-16T09:00"), LocalDateTime.parse("2026-04-16T13:00"), "Scheduled");
+            Flight f8 = new Flight("MGS-500", lunar, martian, LocalDateTime.parse("2026-06-01T06:00"), LocalDateTime.parse("2027-02-15T10:00"), "Boarding");
+            Flight f9 = new Flight("SUB-04", vandenberg, kennedy, LocalDateTime.parse("2026-03-15T09:00"), LocalDateTime.parse("2026-03-15T10:30"), "In Transit");
+            Flight f10 = new Flight("ART-102", lunar, kennedy, LocalDateTime.parse("2026-04-20T10:00"), LocalDateTime.parse("2026-04-23T16:00"), "Scheduled");
+            Flight f11 = new Flight("ESA-203", lunar, guiana, LocalDateTime.parse("2026-05-10T12:00"), LocalDateTime.parse("2026-05-13T17:30"), "Scheduled");
+            Flight f12 = new Flight("LSH-01R", artemis, lunar, LocalDateTime.parse("2026-04-18T08:00"), LocalDateTime.parse("2026-04-18T12:00"), "Scheduled");
+            Flight f13 = new Flight("LSH-02R", lanyue, lunar, LocalDateTime.parse("2026-04-20T09:00"), LocalDateTime.parse("2026-04-20T13:00"), "Scheduled");
+            Flight f14 = new Flight("ART-DIR-1", artemis, kennedy, LocalDateTime.parse("2026-04-25T06:00"), LocalDateTime.parse("2026-04-28T14:00"), "Scheduled");
+            Flight f15 = new Flight("CNSA-DIR-1", lanyue, wenchang, LocalDateTime.parse("2026-05-20T08:00"), LocalDateTime.parse("2026-05-23T15:00"), "Scheduled");
+            Flight f16 = new Flight("MGS-501", martian, lunar, LocalDateTime.parse("2026-01-15T00:00"), LocalDateTime.parse("2026-09-10T12:00"), "In Transit");
+            Flight f17 = new Flight("SUB-05", baikonur, vandenberg, LocalDateTime.parse("2026-03-12T14:00"), LocalDateTime.parse("2026-03-12T15:30"), "Scheduled");
+
+            List<Flight> allFlights = List.of(
+                    f1, f2, f3, f4, f5, f6, f7, f8, f9, 
+                    f10, f11, f12, f13, f14, f15, f16, f17
+            );
+            
+            flightRepository.saveAll(allFlights);
+
+            List<Seat> allSeats = new ArrayList<>();
+            String[] FirstClassSeatLetters = {"A", "B"};
+            String[] OtherClassSeatLetters = {"A", "B", "C", "D"};
+
+            for (Flight currentFlight : allFlights) {
+                for (int row = 1; row <= 15; row++) {
+                    for (String letter : row <= 5 ? FirstClassSeatLetters : OtherClassSeatLetters) {
+                        String seatNumber = row + letter;
+                        SeatType classType = (row <= 5) ? SeatType.FIRST_CLASS : (row <= 9) ? SeatType.BUSINESS : SeatType.ECONOMY;
+                        boolean isBooked = Math.random() < 0.5;
+                        allSeats.add(new Seat(currentFlight, seatNumber, classType, isBooked));
+                    }
+                }
+            }
+
+            seatRepository.saveAll(allSeats);
+
+            System.out.println("Database seeding complete! " + allFlights.size() + " flights and " + allSeats.size() + " seats created.");
+        } else {
+            System.out.println("Database already contains data. Skipping seeder.");
+        }
+    }
+}
