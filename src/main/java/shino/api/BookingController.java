@@ -18,107 +18,64 @@ import shino.dtos.BookingDTO;
 import shino.dtos.DTOMapper;
 import shino.entities.Booking;
 import shino.entities.Seat;
-import shino.entities.User;
-import shino.repositories.BookingRepository;
-import shino.repositories.SeatRepository;
-import shino.repositories.UserRepository;
+import shino.services.BookingService;
 
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingController {
 
-    private final BookingRepository bookingRepository;
-    private final SeatRepository seatRepository;
-    private final UserRepository userRepository;
+    private final BookingService bookingService;
 
-    public BookingController(BookingRepository bookingRepository, SeatRepository seatRepository, UserRepository userRepository) {
-        this.bookingRepository = bookingRepository;
-        this.seatRepository = seatRepository;
-        this.userRepository = userRepository;
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
     @PostMapping("/seat/{seatId}")
     public ResponseEntity<BookingDTO> bookASeat(
         @PathVariable Long seatId,
-        @AuthenticationPrincipal UserDetails userDetails 
+        @AuthenticationPrincipal UserDetails userDetails
     ) {
-        User currentUser = userRepository.findByUsername(userDetails.getUsername())
-            .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Seat seat = seatRepository.findById(seatId)
-            .orElseThrow(() -> new RuntimeException("Seat not found"));
-
-        if (seat.isBooked()) {
-            throw new RuntimeException("Seat is already booked!");
-        }
-
-        seat.setBooked(true);
-        seatRepository.save(seat);
-
-        Booking newBooking = new Booking(currentUser, seat);
-        bookingRepository.save(newBooking);
-
+        Booking newBooking = bookingService.bookSeat(seatId, userDetails.getUsername());
         return ResponseEntity.ok(DTOMapper.toBookingDTO(newBooking));
-    }
-
-    @GetMapping("/{reference}/boarding-pass")
-    public ResponseEntity<BoardingPassDTO> getBoardingPass(
-            @PathVariable String reference,
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        Booking booking = bookingRepository.findByBookingReference(reference)
-            .orElseThrow(() -> new RuntimeException("Booking not found"));
-
-        boolean isOwner = booking.getUser().getUsername().equals(userDetails.getUsername());
-        boolean isAdmin = userDetails.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isOwner && !isAdmin) {
-            throw new RuntimeException("Access Denied: You do not have permission to view this boarding pass.");
-        }
-
-        return ResponseEntity.ok(DTOMapper.toBoardingPassDTO(booking));
-    }
-
-    @DeleteMapping("/{reference}")
-    public ResponseEntity<?> cancelBooking(
-            @PathVariable String reference,
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        Booking booking = bookingRepository.findByBookingReference(reference)
-            .orElseThrow(() -> new RuntimeException("Booking not found"));
-
-        boolean isOwner = booking.getUser().getUsername().equals(userDetails.getUsername());
-        boolean isAdmin = userDetails.getAuthorities().stream()
-            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isOwner && !isAdmin) {
-            throw new RuntimeException("Access Denied: You cannot cancel someone else's booking.");
-        }
-
-        Seat seat = booking.getSeat();
-        seat.setBooked(false);
-        seatRepository.save(seat);
-
-        bookingRepository.delete(booking);
-
-        return ResponseEntity.ok(Map.of(
-            "message", "Booking " + reference + " has been successfully canceled.",
-            "freedSeat", seat.getSeatNumber()
-        ));
     }
 
     @GetMapping("/me")
     public ResponseEntity<List<BookingDTO>> getMyBookings(@AuthenticationPrincipal UserDetails userDetails) {
-        User currentUser = userRepository.findByUsername(userDetails.getUsername())
-            .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<Booking> myBookings = bookingRepository.findByUser(currentUser);
+        List<Booking> myBookings = bookingService.getUserBookings(userDetails.getUsername());
         
         List<BookingDTO> response = myBookings.stream()
             .map(DTOMapper::toBookingDTO)
             .toList();
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{reference}/boarding-pass")
+    public ResponseEntity<BoardingPassDTO> getBoardingPass(
+        @PathVariable String reference,
+        @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        boolean isAdmin = userDetails.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        Booking booking = bookingService.getBookingByReference(reference, userDetails.getUsername(), isAdmin);
+
+        return ResponseEntity.ok(DTOMapper.toBoardingPassDTO(booking));
+    }
+
+    @DeleteMapping("/{reference}")
+    public ResponseEntity<?> cancelBooking(
+        @PathVariable String reference,
+        @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        boolean isAdmin = userDetails.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        Seat freedSeat = bookingService.cancelBooking(reference, userDetails.getUsername(), isAdmin);
+
+        return ResponseEntity.ok(Map.of(
+            "message", "Booking " + reference + " has been successfully canceled.",
+            "freedSeat", freedSeat.getSeatNumber()
+        ));
     }
 }

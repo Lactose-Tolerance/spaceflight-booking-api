@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import shino.dtos.DTOMapper;
 import shino.dtos.FlightDTO;
 import shino.dtos.FlightRequestDTO;
@@ -58,7 +59,7 @@ public class FlightController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightDTO> addFlight(@RequestBody FlightRequestDTO request) {
+    public ResponseEntity<FlightDTO> addFlight(@Valid @RequestBody FlightRequestDTO request) {
         
         Port origin = portRepository.findById(request.originCode())
             .orElseThrow(() -> new RuntimeException("Origin port not found with code: " + request.originCode()));

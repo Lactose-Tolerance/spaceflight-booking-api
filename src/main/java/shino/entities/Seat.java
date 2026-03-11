@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 
 
 @Entity
@@ -21,6 +22,9 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Version
+    private Integer version;
     
     @ManyToOne
     @JoinColumn(name = "flight_id")
@@ -42,6 +46,7 @@ public class Seat {
     }
 
     public Long getId() { return id; }
+    public Integer getVersion() { return version; }
     public Flight getFlight() { return flight; }
     public String getSeatNumber() { return seatNumber; }
     public SeatType getClassType() { return classType; }

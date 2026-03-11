@@ -58,8 +58,8 @@ public class DTOMapper {
             booking.getBookingReference(),
 
             booking.getSeat().getFlight().getFlightNumber(),
-            booking.getSeat().getFlight().getOrigin().getCode() + " (" + booking.getSeat().getFlight().getOrigin().getPlanet() + ")",
-            booking.getSeat().getFlight().getDestination().getCode() + " (" + booking.getSeat().getFlight().getDestination().getPlanet() + ")",
+            booking.getSeat().getFlight().getOrigin().getCode() + " (" + booking.getSeat().getFlight().getOrigin().getPlanet().getName() + ")",
+            booking.getSeat().getFlight().getDestination().getCode() + " (" + booking.getSeat().getFlight().getDestination().getPlanet().getName() + ")",
             booking.getSeat().getFlight().getDeparture(),
 
             booking.getSeat().getSeatNumber(),
