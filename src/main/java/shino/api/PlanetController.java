@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import shino.dtos.PlanetDTO;
 import shino.mappers.EntityMapper;
-import shino.repositories.PlanetRepository;
+import shino.services.PlanetService;
 
 @RestController
 @RequestMapping("/api/planets")
 public class PlanetController {
 
-    private final PlanetRepository planetRepository;
+    private final PlanetService planetService;
     private final EntityMapper mapper;
 
-    public PlanetController(PlanetRepository planetRepository, EntityMapper mapper) {
-        this.planetRepository = planetRepository;
+    public PlanetController(PlanetService planetService, EntityMapper mapper) {
+        this.planetService = planetService;
         this.mapper = mapper;
     }
 
     @GetMapping
     public List<PlanetDTO> getAllPlanets() {
-        return planetRepository.findAll().stream()
+        return planetService.getAllPlanets().stream()
             .map(mapper::toPlanetDTO)
             .toList();
     }

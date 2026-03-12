@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import shino.dtos.PortDTO;
 import shino.dtos.PortRequestDTO;
 import shino.mappers.EntityMapper;
@@ -42,7 +43,7 @@ public class PortController {
     }
 
     @PostMapping
-    public ResponseEntity<PortDTO> addPort(@RequestBody PortRequestDTO request) {
+    public ResponseEntity<PortDTO> addPort(@Valid @RequestBody PortRequestDTO request) {
         return ResponseEntity.ok(mapper.toPortDTO(portService.addPort(request)));
     }
     

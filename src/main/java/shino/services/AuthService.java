@@ -13,6 +13,7 @@ import shino.dtos.RegisterRequest;
 import shino.entities.User;
 import shino.entities.User.UserRole;
 import shino.exceptions.ResourceNotFoundException;
+import shino.exceptions.UserAlreadyExistsException;
 import shino.repositories.UserRepository;
 
 @Service
@@ -33,7 +34,7 @@ public class AuthService {
     @Transactional
     public String register(RegisterRequest request) {
         if (userRepository.findByUsername(request.username()).isPresent()) {
-            throw new RuntimeException("Username is already taken!");
+            throw new UserAlreadyExistsException("Username '" + request.username() + "' is already taken!");
         }
 
         User user = new User(

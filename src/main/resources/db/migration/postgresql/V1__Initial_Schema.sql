@@ -13,7 +13,8 @@ CREATE TABLE port (
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
     semi_major_axis DOUBLE PRECISION,
-    semi_minor_axis DOUBLE PRECISION
+    semi_minor_axis DOUBLE PRECISION,
+    inclination DOUBLE PRECISION
 );
 
 CREATE TABLE users (
