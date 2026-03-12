@@ -50,7 +50,7 @@ public class BookingService {
 
     public List<Booking> getUserBookings(String username) {
         User currentUser = userRepository.findByUsername(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return bookingRepository.findByUser(currentUser);
     }
 

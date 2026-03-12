@@ -40,7 +40,7 @@ public class AuthService {
         User user = new User(
             request.username(),
             passwordEncoder.encode(request.password()),
-            request.role() != null ? request.role() : UserRole.ROLE_USER
+            UserRole.ROLE_USER
         );
         userRepository.save(user);
 

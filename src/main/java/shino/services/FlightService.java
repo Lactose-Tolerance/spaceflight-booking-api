@@ -53,6 +53,10 @@ public class FlightService {
         Port destination = portRepository.findById(request.destinationCode())
             .orElseThrow(() -> new ResourceNotFoundException("Destination port not found with code: " + request.destinationCode()));
 
+        if (request.arrival().isBefore(request.departure())) {
+            throw new IllegalArgumentException("Arrival time must be after departure time.");
+        }
+
         Flight newFlight = new Flight(
             request.flightNumber(), origin, destination, 
             request.departure(), request.arrival(), request.status()

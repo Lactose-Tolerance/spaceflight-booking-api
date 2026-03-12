@@ -2,7 +2,6 @@ package shino.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import shino.entities.User.UserRole;
 
 public record RegisterRequest(
     @NotBlank(message = "Username cannot be blank")
@@ -11,7 +10,5 @@ public record RegisterRequest(
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, message = "Password must be at least 6 characters")
-    String password,
-
-    UserRole role
+    String password
 ) {}

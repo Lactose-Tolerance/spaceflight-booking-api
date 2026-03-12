@@ -44,7 +44,18 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> 
             errors.put(error.getField(), error.getDefaultMessage()));
-        return buildResponse(HttpStatus.BAD_REQUEST, "Validation failed: " + errors.toString());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+            "timestamp", LocalDateTime.now(),
+            "status", HttpStatus.BAD_REQUEST.value(),
+            "error", "Bad Request",
+            "validationErrors", errors 
+        ));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
