@@ -1,8 +1,11 @@
 package shino.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -27,5 +30,9 @@ public record FlightRequestDTO(
         LocalDateTime arrival,
 
         @NotBlank(message = "Status is required")
-        String status
+        String status,
+
+        @NotEmpty(message = "You must provide at least one seat configuration")
+        @Valid
+        List<SeatConfigurationDTO> seatConfigurations
 ) {}
