@@ -1,8 +1,11 @@
 package shino.api;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,14 +41,14 @@ public class FlightController {
             @RequestParam(required = false) String destination,
             @RequestParam(required = false) String originPlanet,
             @RequestParam(required = false) String destinationPlanet,
-            @RequestParam(required = false) String departure,
-            @RequestParam(required = false) String arrival,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrival,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "departure") String sortBy
     ) {
         Page<Flight> flightPage = flightService.searchFlights(
-            origin, destination, originPlanet, destinationPlanet, PageRequest.of(page, size, Sort.by(sortBy))
+            origin, destination, originPlanet, destinationPlanet, departure, arrival, PageRequest.of(page, size, Sort.by(sortBy))
         );
         return flightPage.map(mapper::toFlightDTO);
     }

@@ -11,20 +11,30 @@ import shino.entities.Port;
 import shino.exceptions.ResourceNotFoundException;
 import shino.repositories.FlightRepository;
 import shino.repositories.PortRepository;
+import shino.repositories.SeatRepository;
 
 @Service
 public class FlightService {
 
     private final FlightRepository flightRepository;
     private final PortRepository portRepository;
+    private final SeatRepository seatRepository;
 
-    public FlightService(FlightRepository flightRepository, PortRepository portRepository) {
+    public FlightService(FlightRepository flightRepository, PortRepository portRepository, SeatRepository seatRepository) {
         this.flightRepository = flightRepository;
         this.portRepository = portRepository;
+        this.seatRepository = seatRepository;
     }
 
-    public Page<Flight> searchFlights(String origin, String destination, String originPlanet, String destinationPlanet, Pageable pageable) {
-        return flightRepository.searchFlightsWithPagination(origin, destination, originPlanet, destinationPlanet, pageable);
+    public Page<Flight> searchFlights(
+        String origin, String destination,
+        String originPlanet, String destinationPlanet, 
+        java.time.LocalDateTime departure, java.time.LocalDateTime arrival,
+        Pageable pageable) {
+        
+        return flightRepository.searchFlightsWithPagination(
+                origin, destination, originPlanet, destinationPlanet, departure, arrival, pageable
+        );
     }
 
     @Transactional
@@ -57,6 +67,9 @@ public class FlightService {
         if (!flightRepository.existsById(id)) {
             throw new ResourceNotFoundException("Cannot delete. Flight " + id + " does not exist.");
         }
+        
+        seatRepository.deleteByFlightId(id); 
+        
         flightRepository.deleteById(id);
     }
 }

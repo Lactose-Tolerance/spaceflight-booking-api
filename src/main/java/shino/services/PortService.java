@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import shino.dtos.PortRequestDTO;
 import shino.entities.Planet;
 import shino.entities.Port;
+import shino.exceptions.ResourceInUseException;
 import shino.exceptions.ResourceNotFoundException;
+import shino.repositories.FlightRepository;
 import shino.repositories.PlanetRepository;
 import shino.repositories.PortRepository;
 
@@ -17,20 +19,19 @@ public class PortService {
 
     private final PortRepository portRepository;
     private final PlanetRepository planetRepository;
+    private final FlightRepository flightRepository;
 
-    public PortService(PortRepository portRepository, PlanetRepository planetRepository) {
+    public PortService(PortRepository portRepository, PlanetRepository planetRepository, FlightRepository flightRepository) {
         this.portRepository = portRepository;
         this.planetRepository = planetRepository;
+        this.flightRepository = flightRepository;
     }
 
     public List<Port> getPorts(String planet, String country) {
-        if (planet != null) {
-            return portRepository.findAll().stream()
-                .filter(port -> port.getPlanet() != null && port.getPlanet().getName().equalsIgnoreCase(planet))
-                .filter(port -> country == null || (port.getCountry() != null && port.getCountry().equalsIgnoreCase(country)))
-                .toList();
-        }
-        return portRepository.findAll();
+        return portRepository.findAll().stream()
+            .filter(port -> planet == null || (port.getPlanet() != null && port.getPlanet().getName().equalsIgnoreCase(planet)))
+            .filter(port -> country == null || (port.getCountry() != null && port.getCountry().equalsIgnoreCase(country)))
+            .toList();
     }
 
     public Port getPortByCode(String code) {
@@ -61,6 +62,11 @@ public class PortService {
         if (!portRepository.existsById(code)) {
             throw new ResourceNotFoundException("Cannot delete. Port " + code + " does not exist.");
         }
+
+        if (flightRepository.existsByOriginCodeOrDestinationCode(code, code)) {
+            throw new ResourceInUseException("Cannot delete port " + code + " because it is actively used by scheduled flights.");
+        }
+
         portRepository.deleteById(code);
     }
 }
