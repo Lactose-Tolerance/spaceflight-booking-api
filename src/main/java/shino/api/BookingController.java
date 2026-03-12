@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import shino.dtos.BoardingPassDTO;
 import shino.dtos.BookingDTO;
-import shino.dtos.DTOMapper;
+import shino.mappers.EntityMapper;
 import shino.entities.Booking;
 import shino.entities.Seat;
 import shino.services.BookingService;
@@ -25,9 +25,11 @@ import shino.services.BookingService;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final EntityMapper mapper;
 
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, EntityMapper mapper) {
         this.bookingService = bookingService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/seat/{seatId}")
@@ -36,7 +38,7 @@ public class BookingController {
         @AuthenticationPrincipal UserDetails userDetails
     ) {
         Booking newBooking = bookingService.bookSeat(seatId, userDetails.getUsername());
-        return ResponseEntity.ok(DTOMapper.toBookingDTO(newBooking));
+        return ResponseEntity.ok(mapper.toBookingDTO(newBooking));
     }
 
     @GetMapping("/me")
@@ -44,7 +46,7 @@ public class BookingController {
         List<Booking> myBookings = bookingService.getUserBookings(userDetails.getUsername());
         
         List<BookingDTO> response = myBookings.stream()
-            .map(DTOMapper::toBookingDTO)
+            .map(mapper::toBookingDTO)
             .toList();
 
         return ResponseEntity.ok(response);
@@ -60,7 +62,7 @@ public class BookingController {
 
         Booking booking = bookingService.getBookingByReference(reference, userDetails.getUsername(), isAdmin);
 
-        return ResponseEntity.ok(DTOMapper.toBoardingPassDTO(booking));
+        return ResponseEntity.ok(mapper.toBoardingPassDTO(booking));
     }
 
     @DeleteMapping("/{reference}")

@@ -2,7 +2,6 @@ package shino.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,24 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import shino.dtos.DTOMapper;
 import shino.dtos.FlightDTO;
 import shino.dtos.FlightRequestDTO;
 import shino.entities.Flight;
-import shino.entities.Port;
-import shino.repositories.FlightRepository;
-import shino.repositories.PortRepository;
+import shino.mappers.EntityMapper;
+import shino.services.FlightService;
 
 @RestController
 @RequestMapping("/api/flights")
 public class FlightController {
 
-    private final FlightRepository flightRepository;
-    private final PortRepository portRepository;
+    private final FlightService flightService;
+    private final EntityMapper mapper;
 
-    public FlightController(FlightRepository flightRepository, PortRepository portRepository) {
-        this.flightRepository = flightRepository;
-        this.portRepository = portRepository;
+    public FlightController(FlightService flightService, EntityMapper mapper) {
+        this.flightService = flightService;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -43,64 +40,34 @@ public class FlightController {
             @RequestParam(required = false) String destinationPlanet,
             @RequestParam(required = false) String departure,
             @RequestParam(required = false) String arrival,
-
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "departure") String sortBy
     ) {
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        Page<Flight> flightPage = flightRepository.searchFlightsWithPagination(
-                origin, destination, originPlanet, destinationPlanet, pageable
+        Page<Flight> flightPage = flightService.searchFlights(
+            origin, destination, originPlanet, destinationPlanet, PageRequest.of(page, size, Sort.by(sortBy))
         );
-
-        return flightPage.map(flight -> DTOMapper.toFlightDTO(flight));
+        return flightPage.map(mapper::toFlightDTO);
     }
 
     @PostMapping
     public ResponseEntity<FlightDTO> addFlight(@Valid @RequestBody FlightRequestDTO request) {
-        
-        Port origin = portRepository.findById(request.originCode())
-            .orElseThrow(() -> new RuntimeException("Origin port not found with code: " + request.originCode()));
-                
-        Port destination = portRepository.findById(request.destinationCode())
-            .orElseThrow(() -> new RuntimeException("Destination port not found with code: " + request.destinationCode()));
-
-        Flight newFlight = new Flight(
-            request.flightNumber(),
-            origin,
-            destination,
-            request.departure(),
-            request.arrival(),
-            request.status()
-        );
-
-        flightRepository.save(newFlight);
-
-        return ResponseEntity.ok(DTOMapper.toFlightDTO(newFlight));
+        return ResponseEntity.ok(mapper.toFlightDTO(flightService.addFlight(request)));
     }
 
     @GetMapping("/{id}")
     public FlightDTO getFlightById(@PathVariable Long id) {
-        return flightRepository.findById(id)
-            .map(DTOMapper::toFlightDTO)
-            .orElseThrow(() -> new RuntimeException("Could not find flight with ID: " + id));
+        return mapper.toFlightDTO(flightService.getFlightById(id));
     }
 
     @GetMapping("/number/{flightNumber}")
     public FlightDTO getFlightByNumber(@PathVariable String flightNumber) {
-        return DTOMapper.toFlightDTO(
-            flightRepository.findByFlightNumber(flightNumber)
-        );
+        return mapper.toFlightDTO(flightService.getFlightByNumber(flightNumber));
     }
 
     @DeleteMapping("/{id}")
     public String deleteFlight(@PathVariable Long id) {
-        if (!flightRepository.existsById(id)) {
-            throw new RuntimeException("Cannot delete. Flight " + id + " does not exist.");
-        }
-        flightRepository.deleteById(id);
+        flightService.deleteFlight(id);
         return "Flight " + id + " has been successfully deleted.";
     }
 }

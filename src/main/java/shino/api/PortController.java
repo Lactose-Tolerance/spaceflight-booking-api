@@ -1,85 +1,54 @@
 package shino.api;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import shino.dtos.DTOMapper;
-import shino.entities.Planet;
-import shino.entities.Port;
-import shino.repositories.PlanetRepository;
-import shino.repositories.PortRepository;
-
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import shino.dtos.PortDTO;
 import shino.dtos.PortRequestDTO;
+import shino.mappers.EntityMapper;
+import shino.services.PortService;
 
 @RestController
 @RequestMapping("/api/ports")
 public class PortController {
 
-    private final PortRepository portRepository;
-    private final PlanetRepository planetRepository;
+    private final PortService portService;
+    private final EntityMapper mapper;
 
-    public PortController(PortRepository portRepository, PlanetRepository planetRepository) {
-        this.portRepository = portRepository;
-        this.planetRepository = planetRepository;
+    public PortController(PortService portService, EntityMapper mapper) {
+        this.portService = portService;
+        this.mapper = mapper;
     }
 
     @GetMapping
     public List<PortDTO> getPorts(@RequestParam(required = false) String planet, @RequestParam(required = false) String country) {
-        if (planet != null) {
-            return portRepository.findAll().stream()
-                .filter(port -> port.getPlanet() != null && port.getPlanet().getName().equalsIgnoreCase(planet))
-                .filter(port -> country == null || (port.getCountry() != null && port.getCountry().equalsIgnoreCase(country)))
-                .map(DTOMapper::toPortDTO)
-                .toList();
-        }
-        return portRepository.findAll().stream()
-            .map(DTOMapper::toPortDTO)
+        return portService.getPorts(planet, country).stream()
+            .map(mapper::toPortDTO)
             .toList();
     }
 
     @GetMapping("/{code}")
     public PortDTO getPortByCode(@PathVariable String code) {
-        return portRepository.findById(code)
-            .map(DTOMapper::toPortDTO)
-            .orElseThrow(() -> new RuntimeException("Could not find port with code: " + code));
+        return mapper.toPortDTO(portService.getPortByCode(code));
     }
 
-@PostMapping
+    @PostMapping
     public ResponseEntity<PortDTO> addPort(@RequestBody PortRequestDTO request) {
-        if (portRepository.existsById(request.code())) {
-            throw new RuntimeException("A port with code " + request.code() + " already exists!");
-        }
-
-        Planet planet = planetRepository.findByName(request.planetName().toLowerCase())
-            .orElseThrow(() -> new RuntimeException("Planet not found with Name: " + request.planetName()));
-
-        Port newPort = new Port(
-            request.code(),
-            request.name(),
-            request.country(),
-            planet,
-            Port.getPortType(request.type()),
-            request.latitude(),
-            request.longitude(),
-            request.semiMajorAxis(),
-            request.semiMinorAxis(),
-            request.inclination()
-        );
-
-        Port savedPort = portRepository.save(newPort);
-
-        return ResponseEntity.ok(DTOMapper.toPortDTO(savedPort));
+        return ResponseEntity.ok(mapper.toPortDTO(portService.addPort(request)));
     }
     
     @DeleteMapping("/{code}")
     public String deletePort(@PathVariable String code) {
-        if (!portRepository.existsById(code)) {
-            throw new RuntimeException("Cannot delete. Port " + code + " does not exist.");
-        }
-        portRepository.deleteById(code);
+        portService.deletePort(code);
         return "Port " + code + " has been successfully deleted.";
     }
 }
