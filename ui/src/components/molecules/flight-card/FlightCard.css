@@ -39,15 +39,12 @@
   color: var(--color-text-secondary);
 }
 
-.status-scheduled {
-  color: var(--color-cyan-500);
-  background-color: rgba(0, 210, 255, 0.1);
-}
-
-.status-delayed {
-  color: var(--color-danger-500);
-  background-color: rgba(201, 92, 92, 0.1);
-}
+.status-scheduled { background: rgba(0, 210, 255, 0.15); color: var(--color-cyan-500); }
+.status-delayed { background: rgba(255, 170, 0, 0.15); color: #ffaa00; }
+.status-boarding { background: rgba(0, 255, 136, 0.15); color: #00ff88; }
+.status-in_transit { background: rgba(187, 0, 255, 0.15); color: #bb00ff; }
+.status-arrived { background: rgba(100, 100, 100, 0.3); color: var(--color-text-secondary); }
+.status-cancelled { background: rgba(201, 92, 92, 0.15); color: var(--color-danger-500); }
 
 /* Body Layout */
 .flight-card-body {

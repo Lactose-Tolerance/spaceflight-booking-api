@@ -13,8 +13,11 @@ const FlightCard = ({ flight, onSelect }) => {
   const getStatusClass = (status) => {
     switch (status.toLowerCase()) {
       case 'scheduled': return 'status-scheduled'; // Cyan
+      case 'boarding': return 'status-boarding';   // Green
       case 'delayed': return 'status-delayed';     // Danger/Red
-      case 'in transit': return 'status-transit';  // Maybe we just use standard text for this
+      case 'in transit': return 'status-in_transit';  // Maybe we just use standard text for this
+      case 'arrived': return 'status-arrived';       // Maybe we just use standard text for this
+      case 'cancelled': return 'status-cancelled';   // Maybe we just use standard text for this
       default: return '';
     }
   };

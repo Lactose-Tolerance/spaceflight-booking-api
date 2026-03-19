@@ -24,5 +24,17 @@ export const flightService = {
   getFlightByNumber: async (flightNumber) => {
     const response = await api.get(`/flights/number/${flightNumber}`);
     return response.data;
+  },
+
+  updateFlightStatus: async (id, status) => {
+    // Note: Spring Boot expects a JSON object like { "status": "DELAYED" }
+    const response = await api.patch(`/flights/${id}/status`, { status });
+    return response.data;
+  },
+
+  updateFlightPrices: async (id, pricesData) => {
+    // pricesData should be { firstClassPrice: 0, businessPrice: 0, economyPrice: 0 }
+    const response = await api.patch(`/flights/${id}/prices`, pricesData);
+    return response.data;
   }
 };

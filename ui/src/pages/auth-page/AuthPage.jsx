@@ -22,9 +22,7 @@ const AuthPage = () => {
     setGlobalError(null);
     
     try {
-      await authService.login(credentials);
-      console.log("Login successful!");
-      
+      await authService.login(credentials);      
       // 4. Navigate to the dynamic 'from' path! Use replace: true so they can't hit "Back" to return to the login screen.
       navigate(from, { replace: true }); 
     } catch (error) {
