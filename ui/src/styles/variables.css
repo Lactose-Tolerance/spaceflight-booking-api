@@ -1,0 +1,55 @@
+:root {
+  /* =========================================
+     1. Core Backgrounds (Dark Theme)
+     ========================================= */
+  --color-bg-base: #0d0d12;          /* Deepest background (e.g., body) */
+  --color-bg-surface: #171721;       /* Elevated surfaces (e.g., cards, navbars) */
+  --color-bg-surface-hover: #222230; /* Hover state for surfaces */
+  --color-bg-overlay: #2d2d3f;       /* Modals, popovers, dropdowns */
+
+  /* =========================================
+     2. Text & Typography
+     ========================================= */
+  --color-text-primary: #f8f9fa;     /* Main headings and body text */
+  --color-text-secondary: #a1a1aa;   /* Subtitles, secondary info */
+  --color-text-muted: #52525b;       /* Disabled text, placeholders */
+  --color-text-inverse: #000000;     /* Text on bright backgrounds */
+
+  /* =========================================
+     3. Accents (Bright Cyan Blue)
+     ========================================= */
+  --color-cyan-50:  #e0fbfc;         /* Lightest - good for text on cyan */
+  --color-cyan-100: #c2f5f9;
+  --color-cyan-300: #6ee6f0;
+  --color-cyan-500: #00d2ff;         /* Primary Accent */
+  --color-cyan-600: #00b8e6;         /* Hover state for primary buttons */
+  --color-cyan-700: #008eb3;
+  --color-cyan-900: #004d66;         /* Darkest - good for subtle cyan backgrounds */
+
+  /* =========================================
+     4. Danger (Faded Red)
+     ========================================= */
+  --color-danger-50:  #fbeeee;
+  --color-danger-100: #f4cccc;
+  --color-danger-300: #e08585;
+  --color-danger-500: #c95c5c;       /* Primary Danger */
+  --color-danger-600: #b34747;       /* Hover state for danger buttons */
+  --color-danger-700: #8c3333;
+  --color-danger-900: #4a1919;
+
+  /* =========================================
+     5. Borders & Dividers
+     ========================================= */
+  --color-border: #2a2a35;           /* Standard borders */
+  --color-border-focus: var(--color-cyan-500); /* Focus rings for accessibility */
+}
+
+/* Base Body Styles to enforce the theme immediately */
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}

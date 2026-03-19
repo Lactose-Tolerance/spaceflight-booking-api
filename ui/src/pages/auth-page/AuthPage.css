@@ -1,0 +1,15 @@
+.auth-page-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--color-bg-base);
+  
+  /* A subtle cyan glow emanating from the top to fit the spaceflight theme */
+  background-image: radial-gradient(
+    circle at 50% 0%, 
+    rgba(0, 210, 255, 0.08) 0%, 
+    transparent 50%
+  );
+}

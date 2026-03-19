@@ -1,0 +1,42 @@
+.input-atom {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface); /* Dark enough to blend, light enough to see */
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+}
+
+/* Placeholder styling */
+.input-atom::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1; /* Override default browser opacity for consistency */
+}
+
+/* Focus state - using our cyan accent */
+.input-atom:focus:not(:disabled) {
+  border-color: var(--color-cyan-500);
+  /* A very sheer version of the cyan for a soft glow */
+  box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.15); 
+}
+
+/* Error state - using our danger accent */
+.input-atom.input-error {
+  border-color: var(--color-danger-500);
+}
+
+.input-atom.input-error:focus:not(:disabled) {
+  box-shadow: 0 0 0 3px rgba(201, 92, 92, 0.15); 
+}
+
+/* Disabled state */
+.input-atom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--color-bg-base); /* Recede even further into the background */
+}

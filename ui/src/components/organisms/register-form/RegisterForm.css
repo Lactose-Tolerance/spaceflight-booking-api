@@ -1,0 +1,54 @@
+.register-form-organism {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.register-form-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.register-form-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+}
+
+.register-form-header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.register-form-error {
+  background-color: rgba(201, 92, 92, 0.1);
+  color: var(--color-danger-500);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-danger-500);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.register-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.register-btn-full {
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

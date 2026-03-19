@@ -1,0 +1,14 @@
+.label-atom {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary); /* Slightly muted compared to standard text */
+  margin-bottom: 0.4rem; /* Standard spacing before an input field */
+  cursor: pointer; /* Indicates that clicking it does something (focuses the input) */
+  font-family: inherit;
+}
+
+.label-required {
+  color: var(--color-danger-500); /* Uses your predefined faded red */
+  margin-left: 0.2rem;
+}

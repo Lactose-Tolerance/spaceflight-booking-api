@@ -1,0 +1,68 @@
+.seat-atom {
+  /* Shape the button like a seat */
+  width: 45px;
+  height: 55px;
+  border-radius: 12px 12px 4px 4px; /* Rounded top, slightly rounded bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  /* Creates the "armrest" illusion */
+  box-shadow: -3px 0 0 0 inset rgba(0,0,0,0.1), 3px 0 0 0 inset rgba(0,0,0,0.1);
+}
+
+/* Free Seats: White outline */
+.seat-free {
+  background-color: transparent;
+  border: 2px solid var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.seat-free:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3), -3px 0 0 0 inset rgba(0,0,0,0.1), 3px 0 0 0 inset rgba(0,0,0,0.1);
+}
+
+.seat-free:focus-visible {
+  outline: 2px solid var(--color-cyan-500);
+  outline-offset: 2px;
+}
+
+/* Booked Seats: Solid, greyed out */
+.seat-booked {
+  background-color: var(--color-bg-overlay);
+  border: 2px solid var(--color-bg-overlay);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Optional: Slight color variations based on class */
+.seat-free.first_class {
+  border-color: var(--color-cyan-500);
+  color: var(--color-cyan-500);
+}
+
+.seat-free.business {
+  border-color: var(--color-cyan-300);
+  color: var(--color-cyan-300);
+}
+
+/* Disabled Free Seats (When flight is not Scheduled) */
+.seat-free:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.seat-free:disabled:hover {
+  transform: none;
+  background-color: transparent;
+  box-shadow: -3px 0 0 0 inset rgba(0,0,0,0.1), 3px 0 0 0 inset rgba(0,0,0,0.1);
+}

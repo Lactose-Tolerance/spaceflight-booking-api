@@ -13,10 +13,12 @@ import shino.entities.Port;
 import shino.entities.Port.PortType;
 import shino.entities.Seat;
 import shino.entities.Seat.SeatType;
+import shino.entities.User;
 import shino.repositories.FlightRepository;
 import shino.repositories.PlanetRepository;
 import shino.repositories.PortRepository;
 import shino.repositories.SeatRepository;
+import shino.repositories.UserRepository;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -25,12 +27,14 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final PortRepository portRepository;
     private final SeatRepository seatRepository;
     private final PlanetRepository planetRepository;
+    private final UserRepository userRepository;
 
-    public DatabaseSeeder(FlightRepository flightRepository, PortRepository portRepository, SeatRepository seatRepository, PlanetRepository planetRepository) {
+    public DatabaseSeeder(FlightRepository flightRepository, PortRepository portRepository, SeatRepository seatRepository, PlanetRepository planetRepository, UserRepository userRepository) {
         this.flightRepository = flightRepository;
         this.portRepository = portRepository;
         this.seatRepository = seatRepository;
         this.planetRepository = planetRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -98,6 +102,10 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
 
             seatRepository.saveAll(allSeats);
+
+            User admin = new User("admin", "admin123", User.UserRole.ROLE_ADMIN);
+
+            userRepository.save(admin);
 
             System.out.println("Database seeding complete! " + allFlights.size() + " flights and " + allSeats.size() + " seats created.");
         } else {

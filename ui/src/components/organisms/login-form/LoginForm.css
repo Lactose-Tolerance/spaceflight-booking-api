@@ -1,0 +1,48 @@
+.login-form-organism {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px; /* Keeps the form from getting absurdly wide on desktop */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+}
+
+.login-form-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.login-form-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+}
+
+.login-form-header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.login-form-global-error {
+  background-color: rgba(201, 92, 92, 0.1); /* Very sheer danger background */
+  color: var(--color-danger-500);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-danger-500);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.login-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between the Login and Register buttons */
+  margin-top: 1.5rem;
+}
+
+.login-btn-full {
+  width: 100%; /* Makes the primary button span the whole width */
+}

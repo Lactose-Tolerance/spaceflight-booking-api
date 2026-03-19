@@ -1,0 +1,106 @@
+.seat-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.seat-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.seat-page-flight-card {
+  margin-bottom: 3rem;
+}
+
+/* Hide the "Select Flight" button inside the FlightCard when we are already on this page */
+.seat-page-flight-card .flight-card-footer {
+  display: none;
+}
+
+.seat-map-section h2 {
+  text-align: center;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+/* Legend */
+.seat-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.legend-box.free {
+  border: 2px solid var(--color-text-primary);
+}
+
+.legend-box.booked {
+  background-color: var(--color-bg-overlay);
+}
+
+/* Fuselage & Grid */
+.seat-grid-container {
+  display: flex;
+  justify-content: center;
+}
+
+.fuselage {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 100px 100px 40px 40px; /* Shaped like the inside of a ship */
+  padding: 3rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.row-number {
+  position: absolute;
+  left: -2rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.seat-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.aisle {
+  width: 40px; /* Space for the walking aisle */
+}
+
+.flight-status-warning {
+  background-color: rgba(201, 92, 92, 0.1); /* Sheer danger color */
+  color: var(--color-danger-500);
+  padding: 1rem;
+  border: 1px solid var(--color-danger-500);
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-out;
+}

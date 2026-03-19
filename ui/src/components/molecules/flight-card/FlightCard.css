@@ -1,0 +1,131 @@
+.flight-card-molecule {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.flight-card-molecule:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-cyan-900);
+}
+
+/* Header */
+.flight-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.flight-number {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-text-primary);
+  letter-spacing: 1px;
+}
+
+.flight-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-secondary);
+}
+
+.status-scheduled {
+  color: var(--color-cyan-500);
+  background-color: rgba(0, 210, 255, 0.1);
+}
+
+.status-delayed {
+  color: var(--color-danger-500);
+  background-color: rgba(201, 92, 92, 0.1);
+}
+
+/* Body Layout */
+.flight-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.flight-location {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.text-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.planet-name {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.port-code {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.port-name {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.flight-time {
+  font-size: 0.95rem;
+  color: var(--color-cyan-100);
+  font-weight: 500;
+}
+
+/* The rocket connector in the middle */
+.flight-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0.5;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.connector-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, transparent, var(--color-cyan-900), transparent);
+  z-index: 1;
+}
+
+.connector-icon {
+  font-size: 1.5rem;
+  z-index: 2;
+  background-color: var(--color-bg-surface); /* Hides the line behind the rocket */
+  padding: 0 0.5rem;
+}
+
+/* Footer */
+.flight-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}

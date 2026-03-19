@@ -36,6 +36,10 @@ public class BookingService {
 
         Seat seat = seatRepository.findById(seatId)
             .orElseThrow(() -> new ResourceNotFoundException("Seat not found with ID: " + seatId));
+        
+        if (!"Scheduled".equalsIgnoreCase(seat.getFlight().getStatus())) {
+            throw new IllegalStateException("Seat booking is closed. This flight is currently " + seat.getFlight().getStatus() + ".");
+        }
 
         if (seat.isBooked()) {
             throw new SeatAlreadyBookedException("Seat " + seat.getSeatNumber() + " is already booked!");
