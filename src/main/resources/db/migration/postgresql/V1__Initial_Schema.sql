@@ -31,7 +31,10 @@ CREATE TABLE flight (
     arrival TIMESTAMP NOT NULL,
     status VARCHAR(255) NOT NULL,
     origin_code VARCHAR(255) NOT NULL REFERENCES port(code),
-    destination_code VARCHAR(255) NOT NULL REFERENCES port(code)
+    destination_code VARCHAR(255) NOT NULL REFERENCES port(code),
+    first_class_price DOUBLE PRECISION DEFAULT 0.0 NOT NULL,
+    business_price DOUBLE PRECISION DEFAULT 0.0 NOT NULL,
+    economy_price DOUBLE PRECISION DEFAULT 0.0 NOT NULL
 );
 
 CREATE TABLE seat (

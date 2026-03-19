@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import shino.dtos.FlightRequestDTO;
 import shino.dtos.SeatConfigurationDTO;
+import shino.dtos.UpdateFlightPricesDTO;
 import shino.entities.Flight;
 import shino.entities.Port;
 import shino.entities.Seat;
@@ -59,7 +60,8 @@ public class FlightService {
 
         Flight newFlight = new Flight(
             request.flightNumber(), origin, destination, 
-            request.departure(), request.arrival(), request.status()
+            request.departure(), request.arrival(), request.status(),
+            request.firstClassPrice(), request.businessPrice(), request.economyPrice()
         );
 
         Flight savedFlight = flightRepository.save(newFlight);
@@ -110,5 +112,17 @@ public class FlightService {
         seatRepository.deleteByFlightId(id); 
         
         flightRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Flight updateFlightPrices(Long id, UpdateFlightPricesDTO request) {
+        Flight flight = flightRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Could not find flight with ID: " + id));
+            
+        flight.setFirstClassPrice(request.firstClassPrice());
+        flight.setBusinessPrice(request.businessPrice());
+        flight.setEconomyPrice(request.economyPrice());
+        
+        return flightRepository.save(flight);
     }
 }

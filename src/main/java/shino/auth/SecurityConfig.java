@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/seats/**").permitAll()
 
                 .requestMatchers(HttpMethod.POST, "/api/ports/**", "/api/flights/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/flights/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/ports/**", "/api/flights/**").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/api/bookings/seat/*").hasAnyRole("USER", "ADMIN")

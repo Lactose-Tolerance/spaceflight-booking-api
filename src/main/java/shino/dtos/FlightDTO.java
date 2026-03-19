@@ -11,5 +11,8 @@ public record FlightDTO(
     PortDTO destination,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime departure,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime arrival,
-    String status
+    String status,
+    Double firstClassPrice,
+    Double businessPrice,
+    Double economyPrice
 ) {}

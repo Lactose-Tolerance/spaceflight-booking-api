@@ -45,15 +45,27 @@ public class Flight {
     @NotBlank(message = "Status is required")
     private String status;
 
+    @NotNull(message = "First class price is required")
+    private Double firstClassPrice;
+
+    @NotNull(message = "Business class price is required")
+    private Double businessPrice;
+
+    @NotNull(message = "Economy class price is required")
+    private Double economyPrice;
+
     public Flight() {}
 
-    public Flight(String flightNumber, Port origin, Port destination, LocalDateTime departure, LocalDateTime arrival, String status) {
+    public Flight(String flightNumber, Port origin, Port destination, LocalDateTime departure, LocalDateTime arrival, String status, Double firstClassPrice, Double businessPrice, Double economyPrice) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
         this.departure = departure;
         this.arrival = arrival;
         this.status = status;
+        this.firstClassPrice = firstClassPrice;
+        this.businessPrice = businessPrice;
+        this.economyPrice = economyPrice;
     }
 
     public Long getId() { return id; }
@@ -63,6 +75,9 @@ public class Flight {
     public LocalDateTime getDeparture() { return departure; }
     public LocalDateTime getArrival() { return arrival; }
     public String getStatus() { return status; }
+    public Double getFirstClassPrice() { return firstClassPrice; }
+    public Double getBusinessPrice() { return businessPrice; }
+    public Double getEconomyPrice() { return economyPrice; }
     
     public void setId(Long id) { this.id = id; }
     public void setFlightNumber(String flightNumber) { this.flightNumber = flightNumber; }
@@ -71,4 +86,7 @@ public class Flight {
     public void setDeparture(LocalDateTime departure) { this.departure = departure; }
     public void setArrival(LocalDateTime arrival) { this.arrival = arrival; }
     public void setStatus(String status) { this.status = status; }
+    public void setFirstClassPrice(Double firstClassPrice) { this.firstClassPrice = firstClassPrice; }
+    public void setBusinessPrice(Double businessPrice) { this.businessPrice = businessPrice; }
+    public void setEconomyPrice(Double economyPrice) { this.economyPrice = economyPrice; }
 }

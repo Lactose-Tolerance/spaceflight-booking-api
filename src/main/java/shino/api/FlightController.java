@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import shino.dtos.FlightDTO;
 import shino.dtos.FlightRequestDTO;
+import shino.dtos.UpdateFlightPricesDTO;
 import shino.entities.Flight;
 import shino.mappers.EntityMapper;
 import shino.services.FlightService;
@@ -72,5 +74,10 @@ public class FlightController {
     public String deleteFlight(@PathVariable Long id) {
         flightService.deleteFlight(id);
         return "Flight " + id + " has been successfully deleted.";
+    }
+
+    @PatchMapping("/{id}/prices")
+    public ResponseEntity<FlightDTO> updateFlightPrices(@PathVariable Long id, @Valid @RequestBody UpdateFlightPricesDTO request) {
+        return ResponseEntity.ok(mapper.toFlightDTO(flightService.updateFlightPrices(id, request)));
     }
 }
