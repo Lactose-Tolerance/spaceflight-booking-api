@@ -12,6 +12,7 @@ import shino.dtos.FlightRequestDTO;
 import shino.dtos.SeatConfigurationDTO;
 import shino.dtos.UpdateFlightPricesDTO;
 import shino.entities.Flight;
+import shino.entities.FlightStatus;
 import shino.entities.Port;
 import shino.entities.Seat;
 import shino.exceptions.ResourceNotFoundException;
@@ -36,13 +37,17 @@ public class FlightService {
     }
 
     public Page<Flight> searchFlights(
+        String flightNumber,
         String origin, String destination,
         String originPlanet, String destinationPlanet, 
         java.time.LocalDateTime departure, java.time.LocalDateTime arrival,
+        java.util.List<FlightStatus> statuses,
         Pageable pageable) {
         
+        boolean hasStatuses = statuses != null && !statuses.isEmpty();
+        
         return flightRepository.searchFlightsWithPagination(
-                origin, destination, originPlanet, destinationPlanet, departure, arrival, pageable
+                flightNumber, origin, destination, originPlanet, destinationPlanet, departure, arrival, statuses, hasStatuses, pageable
         );
     }
 
@@ -123,6 +128,15 @@ public class FlightService {
         flight.setBusinessPrice(request.businessPrice());
         flight.setEconomyPrice(request.economyPrice());
         
+        return flightRepository.save(flight);
+    }
+
+    @Transactional
+    public Flight updateFlightStatus(Long id, FlightStatus newStatus) {
+        Flight flight = flightRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Could not find flight with ID: " + id));
+            
+        flight.setStatus(newStatus);
         return flightRepository.save(flight);
     }
 }

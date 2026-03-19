@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,8 +44,9 @@ public class Flight {
     // @Future(message = "Arrival time must be in the future")
     private LocalDateTime arrival;
 
-    @NotBlank(message = "Status is required")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Flight status is required")
+    private FlightStatus status;
 
     @NotNull(message = "First class price is required")
     private Double firstClassPrice;
@@ -56,7 +59,7 @@ public class Flight {
 
     public Flight() {}
 
-    public Flight(String flightNumber, Port origin, Port destination, LocalDateTime departure, LocalDateTime arrival, String status, Double firstClassPrice, Double businessPrice, Double economyPrice) {
+    public Flight(String flightNumber, Port origin, Port destination, LocalDateTime departure, LocalDateTime arrival, FlightStatus status, Double firstClassPrice, Double businessPrice, Double economyPrice) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
@@ -74,7 +77,7 @@ public class Flight {
     public Port getDestination() { return destination; }
     public LocalDateTime getDeparture() { return departure; }
     public LocalDateTime getArrival() { return arrival; }
-    public String getStatus() { return status; }
+    public FlightStatus getStatus() { return status; }
     public Double getFirstClassPrice() { return firstClassPrice; }
     public Double getBusinessPrice() { return businessPrice; }
     public Double getEconomyPrice() { return economyPrice; }
@@ -85,7 +88,7 @@ public class Flight {
     public void setDestination(Port destination) { this.destination = destination; }
     public void setDeparture(LocalDateTime departure) { this.departure = departure; }
     public void setArrival(LocalDateTime arrival) { this.arrival = arrival; }
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(FlightStatus status) { this.status = status; }
     public void setFirstClassPrice(Double firstClassPrice) { this.firstClassPrice = firstClassPrice; }
     public void setBusinessPrice(Double businessPrice) { this.businessPrice = businessPrice; }
     public void setEconomyPrice(Double economyPrice) { this.economyPrice = economyPrice; }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import shino.entities.FlightStatus;
+
 public record FlightDTO(
     Long id,
     String flightNumber,
@@ -11,7 +13,7 @@ public record FlightDTO(
     PortDTO destination,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime departure,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime arrival,
-    String status,
+    FlightStatus status,
     Double firstClassPrice,
     Double businessPrice,
     Double economyPrice

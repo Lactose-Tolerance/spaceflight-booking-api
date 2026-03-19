@@ -1,0 +1,138 @@
+.booking-card-molecule {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-card-molecule:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.booking-cancelled {
+  opacity: 0.6;
+}
+
+.booking-cancelled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.booking-card-header {
+  background-color: var(--color-bg-overlay);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.booking-ref-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ref-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ref-value {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: var(--color-cyan-500);
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.booking-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: var(--color-bg-base);
+}
+
+.status-confirmed { color: var(--color-cyan-500); border: 1px solid var(--color-cyan-900); }
+.status-cancelled { color: var(--color-text-muted); border: 1px solid var(--color-border); }
+
+/* Body */
+.booking-card-body {
+  padding: 1.5rem;
+}
+
+.booking-route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.route-point {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.point-code {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.point-time {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.route-connector {
+  color: var(--color-cyan-700);
+  font-size: 1.5rem;
+}
+
+.booking-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.detail-value.highlight {
+  color: var(--color-cyan-300);
+  font-weight: 700;
+}
+
+.booking-card-footer {
+  padding: 1rem 1.5rem;
+  background-color: var(--color-bg-base);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+}

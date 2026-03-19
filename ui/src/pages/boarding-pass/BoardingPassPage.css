@@ -1,0 +1,224 @@
+.pass-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-btn {
+  align-self: flex-start;
+  margin-bottom: 2rem;
+}
+
+/* The physical ticket shape */
+.boarding-pass-ticket {
+  width: 100%;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-cyan-900);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 210, 255, 0.1);
+  position: relative;
+}
+
+.ticket-header {
+  background-color: var(--color-cyan-900);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticket-header .label {
+  color: var(--color-cyan-100);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.ticket-header .value {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.flight-hl {
+  letter-spacing: 2px;
+}
+
+.ticket-body {
+  padding: 2rem;
+  background-color: var(--color-bg-surface);
+}
+
+.route-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.route-node {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.text-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.route-node .planet {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.route-node .port-code {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+}
+
+.route-node .port-name {
+  font-size: 0.95rem;
+  color: var(--color-cyan-500);
+  margin-bottom: 1rem;
+}
+
+.time-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-group .date {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.time-group .time {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.route-icon {
+  font-size: 2.5rem;
+  color: var(--color-text-muted);
+  transform: rotate(45deg); /* Pointing up and right */
+  opacity: 0.3;
+}
+
+.seat-details-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px dashed var(--color-border);
+  padding-top: 2rem;
+}
+
+.detail-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-box .label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.detail-box .value {
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.giant-seat {
+  font-size: 2.5rem !important;
+  color: var(--color-cyan-500) !important;
+  font-weight: 900 !important;
+  line-height: 1;
+}
+
+/* Footer & Barcode trick */
+.ticket-footer {
+  background-color: var(--color-bg-base);
+  padding: 1.5rem 2rem;
+  border-top: 2px dashed var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+/* Creates the perforated ticket cutouts on the sides */
+.ticket-footer::before, .ticket-footer::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-bg-base); /* Match page background */
+  border-radius: 50%;
+}
+
+.ticket-footer::before {
+  left: -15px;
+  box-shadow: inset -1px 0 0 var(--color-border);
+}
+
+.ticket-footer::after {
+  right: -15px;
+  box-shadow: inset 1px 0 0 var(--color-border);
+}
+
+.reference-box {
+  text-align: center;
+}
+
+.reference-box .label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.reference-box .value {
+  font-family: monospace;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  letter-spacing: 4px;
+}
+
+/* CSS Dummy Barcode */
+.barcode-dummy {
+  height: 40px;
+  width: 80%;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-text-primary),
+    var(--color-text-primary) 2px,
+    transparent 2px,
+    transparent 4px,
+    var(--color-text-primary) 4px,
+    var(--color-text-primary) 5px,
+    transparent 5px,
+    transparent 8px,
+    var(--color-text-primary) 8px,
+    var(--color-text-primary) 12px,
+    transparent 12px,
+    transparent 14px
+  );
+  opacity: 0.8;
+}

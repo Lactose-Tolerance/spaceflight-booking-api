@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import shino.entities.Booking;
+import shino.entities.FlightStatus;
 import shino.entities.Seat;
 import shino.entities.User;
 import shino.exceptions.ResourceNotFoundException;
@@ -37,7 +38,7 @@ public class BookingService {
         Seat seat = seatRepository.findById(seatId)
             .orElseThrow(() -> new ResourceNotFoundException("Seat not found with ID: " + seatId));
         
-        if (!"Scheduled".equalsIgnoreCase(seat.getFlight().getStatus())) {
+        if (seat.getFlight().getStatus() != FlightStatus.SCHEDULED) {
             throw new IllegalStateException("Seat booking is closed. This flight is currently " + seat.getFlight().getStatus() + ".");
         }
 

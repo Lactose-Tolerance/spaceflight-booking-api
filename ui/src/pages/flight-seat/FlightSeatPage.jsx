@@ -40,9 +40,7 @@ const FlightSeatPage = () => {
   }, [flightId]);
 
   const handleSeatClick = (seat) => {
-    console.log("Navigating to booking for seat:", seat.seatNumber);
-    // Placeholder for future navigation:
-    // navigate(`/book/seat/${seat.id}`);
+    navigate(`/flights/${flightId}/seats/${seat.id}/book`);
   };
 
   // Group seats by row number (e.g., "1A" -> Row 1)
@@ -85,7 +83,6 @@ const FlightSeatPage = () => {
 
       <div className="seat-map-section">
         
-        {/* NEW: Warning Banner if the flight isn't scheduled */}
         {!isFlightBookable && (
           <div className="flight-status-warning">
             This flight is currently {flight.status}. Seat booking is only available for Scheduled flights.

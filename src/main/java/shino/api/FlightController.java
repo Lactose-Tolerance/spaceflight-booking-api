@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 import shino.dtos.FlightDTO;
 import shino.dtos.FlightRequestDTO;
 import shino.dtos.UpdateFlightPricesDTO;
+import shino.dtos.UpdateFlightStatusDTO;
 import shino.entities.Flight;
 import shino.mappers.EntityMapper;
 import shino.services.FlightService;
@@ -39,18 +40,27 @@ public class FlightController {
 
     @GetMapping
     public Page<FlightDTO> searchFlights(
+            @RequestParam(required = false) String flightNumber,
             @RequestParam(required = false) String origin,
             @RequestParam(required = false) String destination,
             @RequestParam(required = false) String originPlanet,
             @RequestParam(required = false) String destinationPlanet,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departure,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrival,
+            @RequestParam(required = false) java.util.List<shino.entities.FlightStatus> status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "departure") String sortBy
+            @RequestParam(defaultValue = "departure") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDir
     ) {
+        // Construct the Sort object dynamically based on direction
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) 
+                    ? Sort.by(sortBy).ascending() 
+                    : Sort.by(sortBy).descending();
+
         Page<Flight> flightPage = flightService.searchFlights(
-            origin, destination, originPlanet, destinationPlanet, departure, arrival, PageRequest.of(page, size, Sort.by(sortBy))
+            flightNumber, origin, destination, originPlanet, destinationPlanet, 
+            departure, arrival, status, PageRequest.of(page, size, sort)
         );
         return flightPage.map(mapper::toFlightDTO);
     }
@@ -79,5 +89,12 @@ public class FlightController {
     @PatchMapping("/{id}/prices")
     public ResponseEntity<FlightDTO> updateFlightPrices(@PathVariable Long id, @Valid @RequestBody UpdateFlightPricesDTO request) {
         return ResponseEntity.ok(mapper.toFlightDTO(flightService.updateFlightPrices(id, request)));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<FlightDTO> updateFlightStatus(
+            @PathVariable Long id, 
+            @Valid @RequestBody UpdateFlightStatusDTO request) {
+        return ResponseEntity.ok(mapper.toFlightDTO(flightService.updateFlightStatus(id, request.status())));
     }
 }

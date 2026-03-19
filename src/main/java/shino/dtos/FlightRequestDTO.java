@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import shino.entities.FlightStatus;
 
 public record FlightRequestDTO(
         
@@ -30,8 +31,8 @@ public record FlightRequestDTO(
         @NotNull(message = "Arrival time is required")
         LocalDateTime arrival,
 
-        @NotBlank(message = "Status is required")
-        String status,
+        @NotNull(message = "Flight status is required")
+        FlightStatus status,
 
         @NotEmpty(message = "You must provide at least one seat configuration")
         @Valid

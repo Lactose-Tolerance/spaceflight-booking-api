@@ -26,6 +26,7 @@ public interface EntityMapper {
     FlightDTO toFlightDTO(Flight flight);
 
     @Mapping(source = "flight.flightNumber", target = "flightNumber", defaultValue = "Unknown Flight")
+    @Mapping(source = "flight.id", target = "flightId")
     @Mapping(source = "flight.origin.code", target = "origin", defaultValue = "Unknown Origin")
     @Mapping(source = "flight.destination.code", target = "destination", defaultValue = "Unknown Destination")
     @Mapping(source = "flight.departure", target = "departure")
@@ -36,8 +37,10 @@ public interface EntityMapper {
     @Mapping(target = "origin", expression = "java(booking.getSeat().getFlight().getOrigin().getCode() + \" (\" + booking.getSeat().getFlight().getOrigin().getPlanet().getName() + \")\")")
     @Mapping(target = "destination", expression = "java(booking.getSeat().getFlight().getDestination().getCode() + \" (\" + booking.getSeat().getFlight().getDestination().getPlanet().getName() + \")\")")
     @Mapping(source = "seat.flight.departure", target = "departureTime")
+    @Mapping(source = "seat.flight.arrival", target = "arrivalTime")
     @Mapping(source = "seat.seatNumber", target = "seatNumber")
     @Mapping(source = "seat.classType", target = "seatClass")
+    @Mapping(source = "seat.flight.status", target = "status")
     BookingDTO toBookingDTO(Booking booking);
 
     @Mapping(source = "user.username", target = "passengerName")

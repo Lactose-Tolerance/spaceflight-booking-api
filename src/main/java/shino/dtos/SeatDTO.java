@@ -11,6 +11,7 @@ public record SeatDTO(
     String seatNumber,
     SeatType classType,
     boolean booked,
+    Long flightId,
     String flightNumber,
     String origin,
     String destination,

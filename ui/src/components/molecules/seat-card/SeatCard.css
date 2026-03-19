@@ -1,0 +1,79 @@
+.seat-card-molecule {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.seat-card-header {
+  background-color: var(--color-bg-overlay);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.seat-card-header h4 {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.seat-card-header .flight-number {
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.seat-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.summary-value {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.summary-value.highlight {
+  color: var(--color-cyan-500);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.seat-card-footer {
+  padding: 1.5rem;
+  background-color: rgba(0, 210, 255, 0.05); /* Very faint cyan tint */
+  border-top: 1px dashed var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.total-price {
+  color: var(--color-cyan-500);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
