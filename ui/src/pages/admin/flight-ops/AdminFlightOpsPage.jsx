@@ -3,8 +3,14 @@ import { flightService } from '../../../services/flightService';
 import Button from '../../../components/atoms/button/Button';
 import FormField from '../../../components/molecules/form-field/FormField';
 import Modal from '../../../components/organisms/modal/Modal';
-import CreateFlightModal from '../../../components/organisms/admin-layout/CreateFlightModal';
+import CreateFlightModal from '../../../components/organisms/create-flight/CreateFlightModal';
 import './AdminFlightOpsPage.css';
+
+const getCurrentDateTimeLocal = () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 16);
+};
 
 // For the Update Status Modal dropdown
 const FLIGHT_STATUSES = ['Scheduled', 'Delayed', 'Boarding', 'In Transit', 'Arrived', 'Cancelled'];
@@ -29,9 +35,9 @@ const AdminFlightOpsPage = () => {
 
   // --- Search & Filter State ---
   const [searchParams, setSearchParams] = useState({
-    flightNumber: '', origin: '', destination: '', originPlanet: '', destinationPlanet: '', departure: '', arrival: '', status: [],
+    flightNumber: '', origin: '', destination: '', originPlanet: '', destinationPlanet: '', departure: getCurrentDateTimeLocal(), arrival: '', status: [],
   });
-  const [sortConfig, setSortConfig] = useState({ sortBy: 'departure', sortDir: 'DESC' });
+  const [sortConfig, setSortConfig] = useState({ sortBy: 'departure', sortDir: 'ASC' });
 
   // --- Modal States ---
   const [activeFlight, setActiveFlight] = useState(null);
@@ -106,7 +112,7 @@ const AdminFlightOpsPage = () => {
 
   const clearFilters = () => {
     const cleared = { flightNumber: '', origin: '', destination: '', originPlanet: '', destinationPlanet: '', departure: '', arrival: '', status: [] };
-    const defaultSort = { sortBy: 'departure', sortDir: 'DESC' };
+    const defaultSort = { sortBy: 'departure', sortDir: 'ASC' };
     setSearchParams(cleared);
     setSortConfig(defaultSort);
     fetchFlights(0, cleared, defaultSort);
@@ -219,8 +225,8 @@ const AdminFlightOpsPage = () => {
               <div className="form-field-molecule">
                 <label htmlFor="sortDir">Order</label>
                 <select id="sortDir" value={sortConfig.sortDir} onChange={handleSortChange} className="form-input">
-                  <option value="DESC">Descending (Newest First)</option>
-                  <option value="ASC">Ascending (Oldest First)</option>
+                  <option value="DESC">Newest First</option>
+                  <option value="ASC">Oldest First</option>
                 </select>
               </div>
             </div>

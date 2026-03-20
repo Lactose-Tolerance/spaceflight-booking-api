@@ -1,0 +1,60 @@
+.create-port-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+/* Custom scrollbar matching dark theme */
+.create-port-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.create-port-grid::-webkit-scrollbar-track {
+  background: var(--color-bg-base); 
+}
+.create-port-grid::-webkit-scrollbar-thumb {
+  background: var(--color-border); 
+  border-radius: 10px;
+}
+.create-port-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary); 
+}
+
+.port-section-title {
+  color: var(--color-cyan-500);
+  border-bottom: 1px dashed var(--color-border);
+  margin: 0;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.port-section-title.mt-1 {
+  margin-top: 1rem;
+}
+
+.port-row-1-2 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+}
+
+.port-row-halves {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.port-row-thirds {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .port-row-1-2, .port-row-halves, .port-row-thirds {
+    grid-template-columns: 1fr;
+  }
+}

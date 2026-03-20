@@ -1,9 +1,11 @@
 package shino.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import shino.entities.Planet;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import shino.entities.Planet;
+
 public interface PlanetRepository extends JpaRepository<Planet, Long> {
-    Optional<Planet> findByName(String name);
+    Optional<Planet> findByNameIgnoreCase(String name);
 }

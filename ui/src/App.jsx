@@ -10,8 +10,9 @@ import Navbar from './components/organisms/navbar/Navbar';
 import ProtectedRoute from './utils/ProtectedRoute';
 import AdminRoute from './utils/AdminRoute';
 import AdminLayout from './components/organisms/admin-layout/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
 import AdminFlightOpsPage from './pages/admin/flight-ops/AdminFlightOpsPage';
+import AdminPortOpsPage from './pages/admin/port-ops/AdminPortOpsPage';
 
 import './styles/global.css';
 
@@ -50,6 +51,7 @@ function App() {
             <AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<AdminDashboard />} /> 
             <Route path="flights" element={<AdminFlightOpsPage />} />
+            <Route path="ports" element={<AdminPortOpsPage />} />
           </Route>
         </Routes>
       </div>

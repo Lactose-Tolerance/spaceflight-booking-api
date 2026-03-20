@@ -45,7 +45,7 @@ public class PortService {
             throw new RuntimeException("A port with code " + request.code() + " already exists!");
         }
 
-        Planet planetEntity = planetRepository.findByName(request.planetName().toLowerCase())
+        Planet planetEntity = planetRepository.findByNameIgnoreCase(request.planetName())
             .orElseThrow(() -> new ResourceNotFoundException("Planet not found with Name: " + request.planetName()));
 
         Port newPort = new Port(
