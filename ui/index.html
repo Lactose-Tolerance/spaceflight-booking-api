@@ -5,6 +5,43 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ui</title>
+    <style>
+      @media print {
+        /* Nuke the UI */
+        nav, header, footer, button, a, .print-actions, .navbar-organism {
+          display: none !important;
+        }
+        
+        /* Force White Paper */
+        body, html, #root, .app-content {
+          background: #ffffff !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        /* Force Pure Black Text and remove glowing shadows */
+        * {
+          color: #000000 !important;
+          text-shadow: none !important;
+          box-shadow: none !important;
+          background-color: transparent !important;
+        }
+
+        /* Ticket Border */
+        .boarding-pass-card {
+          border: 2px dashed #000000 !important;
+          border-radius: 0 !important;
+          margin: 0 auto !important;
+          max-width: 100% !important;
+        }
+
+        /* Keep SVGs/Icons black */
+        svg {
+          fill: #000000 !important;
+          color: #000000 !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

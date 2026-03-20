@@ -9,11 +9,11 @@ import BoardingPassPage from './pages/boarding-pass/BoardingPassPage';
 import Navbar from './components/organisms/navbar/Navbar';
 import ProtectedRoute from './utils/ProtectedRoute';
 import AdminRoute from './utils/AdminRoute';
-import AdminLayout from './components/organisms/admin-layout/AdminLayout';
 import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
 import AdminFlightOpsPage from './pages/admin/flight-ops/AdminFlightOpsPage';
 import AdminPortOpsPage from './pages/admin/port-ops/AdminPortOpsPage';
 import AdminManifestPage from './pages/admin/manifest/AdminManifestPage';
+import AdminLandingPage from './pages/admin/landing/AdminLandingPage';
 
 import './styles/global.css';
 
@@ -48,13 +48,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/admin" element={
-            <AdminRoute><AdminLayout /></AdminRoute>}>
-            <Route index element={<AdminDashboard />} /> 
-            <Route path="flights" element={<AdminFlightOpsPage />} />
-            <Route path="ports" element={<AdminPortOpsPage />} />
-            <Route path="flights/:flightId/manifest" element={<AdminManifestPage />} />
-          </Route>
+          <Route path="/admin" element={<AdminRoute><AdminLandingPage /></AdminRoute>} />
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/flights" element={<AdminRoute><AdminFlightOpsPage /></AdminRoute>} />
+          <Route path="/admin/ports" element={<AdminRoute><AdminPortOpsPage /></AdminRoute>} />
+          <Route path="/admin/flights/:flightId/manifest" element={<AdminRoute><AdminManifestPage /></AdminRoute>} />
         </Routes>
       </div>
     </BrowserRouter>

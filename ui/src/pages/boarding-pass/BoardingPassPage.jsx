@@ -112,6 +112,12 @@ const BoardingPassPage = () => {
           <div className="barcode-dummy"></div>
         </div>
       </div>
+
+      <div className="print-actions">
+        <Button variant="secondary" onClick={() => window.print()}>
+          🖨️ Print
+        </Button>
+      </div>
     </div>
   );
 };

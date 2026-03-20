@@ -142,12 +142,12 @@ const AdminDashboard = () => {
               
               <div className="quick-actions-grid">
                 <div className="action-card" onClick={() => navigate('/admin/flights')}>
-                  <h4>Manage Fleet</h4>
+                  <h4>Manage Flights</h4>
                   <p>View, edit, and cancel scheduled flights across the network.</p>
                 </div>
                 
                 <div className="action-card" onClick={() => navigate('/admin/ports')}>
-                  <h4>Spaceport Ops</h4>
+                  <h4>Manage Ports</h4>
                   <p>Manage planetary and orbital docking hubs.</p>
                 </div>
 

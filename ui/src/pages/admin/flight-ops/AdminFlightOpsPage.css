@@ -1,5 +1,8 @@
 .admin-ops-page {
   color: var(--color-text-primary);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
 .admin-header {

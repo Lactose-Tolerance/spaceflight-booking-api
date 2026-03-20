@@ -24,7 +24,20 @@ const AuthPage = () => {
     try {
       await authService.login(credentials);      
       // 4. Navigate to the dynamic 'from' path! Use replace: true so they can't hit "Back" to return to the login screen.
-      navigate(from, { replace: true }); 
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        // 5. Decode the JWT payload to check roles
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isAdmin = payload.roles && payload.roles.includes('ROLE_ADMIN');
+
+        // 6. Smart Redirect!
+        if (isAdmin) {
+          navigate('/admin', { replace: true }); // Send admins to Mission Control
+        } else {
+          navigate(from, { replace: true }); // Send civilians to flight search
+        }
+      }
     } catch (error) {
       if (!error.response) {
         setGlobalError("Network Error: Could not connect to the server. Is the backend running?");

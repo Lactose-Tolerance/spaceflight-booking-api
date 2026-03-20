@@ -222,3 +222,56 @@
   );
   opacity: 0.8;
 }
+
+/* --- Print Button Styling (Screen only) --- */
+.print-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* --- Print Styles for the physical ticket --- */
+@media print {
+  /* 1. Hide ALL website UI, print buttons, and links */
+  .navbar-organism,
+  .print-actions,
+  button, 
+  a,
+  .back-btn {
+    display: none !important;
+  }
+
+  /* 2. Force pure white backgrounds everywhere */
+  body, html, #root, .app-content, .boarding-pass-page {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 3. The Nuclear Option: Force ALL text and icons to be pure black */
+  .boarding-pass-page * {
+    color: #000000 !important;
+    text-shadow: none !important; /* Kills the glow */
+    box-shadow: none !important; 
+    filter: none !important; /* Kills drop-shadows on SVG icons */
+    background-color: transparent !important;
+    border-color: #000000 !important; /* Forces the card border to be black */
+  }
+
+  /* 4. Formatting the ticket itself for the paper */
+  .boarding-pass-card {
+    border: 2px dashed #000000 !important; /* Dark cut lines */
+    border-radius: 0 !important; 
+    margin: 2cm auto !important; 
+    max-width: 800px !important;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ensure the plane icon stays visible and black */
+  .boarding-pass-card svg {
+    fill: #000000 !important;
+  }
+}

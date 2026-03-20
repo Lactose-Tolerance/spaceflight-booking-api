@@ -6,6 +6,12 @@ import FormField from '../../components/molecules/form-field/FormField';
 import Button from '../../components/atoms/button/Button';
 import './FlightSearchPage.css';
 
+const getCurrentDateTimeLocal = () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 16);
+};
+
 // All valid backend enum statuses
 const FLIGHT_STATUSES = [
   { id: 'SCHEDULED', label: 'Scheduled' },
@@ -29,7 +35,7 @@ const FlightSearchPage = () => {
     destination: '',
     originPlanet: '',
     destinationPlanet: '',
-    departure: '',
+    departure: getCurrentDateTimeLocal(), // Default to current date/time
     arrival: '',
     status: [], // Array to hold checked statuses
   });
