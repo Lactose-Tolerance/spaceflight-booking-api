@@ -17,7 +17,9 @@ const FLIGHT_STATUSES = [
   { id: 'SCHEDULED', label: 'Scheduled' },
   { id: 'DELAYED', label: 'Delayed' },
   { id: 'BOARDING', label: 'Boarding' },
-  { id: 'IN_TRANSIT', label: 'In Transit' }
+  { id: 'IN_TRANSIT', label: 'In Transit' },
+  { id: 'ARRIVED', label: 'Arrived' },
+  { id: 'CANCELLED', label: 'Cancelled' },
 ];
 
 const FlightSearchPage = () => {
