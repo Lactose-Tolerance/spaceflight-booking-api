@@ -37,7 +37,7 @@ const FlightSearchPage = () => {
     destinationPlanet: '',
     departure: getCurrentDateTimeLocal(), // Default to current date/time
     arrival: '',
-    status: [], // Array to hold checked statuses
+    status: ['SCHEDULED'], // Array to hold checked statuses
   });
 
   // Dedicated sort configuration state
