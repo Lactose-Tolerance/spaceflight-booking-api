@@ -1,0 +1,48 @@
+.create-flight-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 1rem; /* Gives the scrollbar room to breathe */
+}
+
+.grid-section-title {
+  margin: 1.5rem 0 0.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-cyan-500);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Keeps the related Row/Col inputs side-by-side */
+.seat-config-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Make custom scrollbar for the modal so it matches your dark theme */
+.create-flight-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.create-flight-grid::-webkit-scrollbar-track {
+  background: var(--color-bg-base); 
+}
+.create-flight-grid::-webkit-scrollbar-thumb {
+  background: var(--color-border); 
+  border-radius: 10px;
+}
+.create-flight-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary); 
+}
+
+/* Optional: Stack the seat configs on very small screens */
+@media (max-width: 500px) {
+  .seat-config-group {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
