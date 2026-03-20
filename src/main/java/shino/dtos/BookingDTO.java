@@ -8,6 +8,7 @@ public record BookingDTO(
     String bookingReference,
     String status, // ADDED
 
+    String passengerName,
     String flightNumber,
     String origin,
     String destination,

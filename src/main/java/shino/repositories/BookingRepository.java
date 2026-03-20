@@ -13,5 +13,6 @@ import shino.entities.User;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByUser(User user);
     Optional<Booking> findByBookingReference(String bookingReference);
+    List<Booking> findBySeatFlightId(Long flightId);
     void deleteBySeatFlightId(Long flightId);
 }

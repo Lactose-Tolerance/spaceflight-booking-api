@@ -19,5 +19,10 @@ export const bookingService = {
   getBoardingPass: async (reference) => {
     const response = await api.get(`/bookings/${reference}/boarding-pass`);
     return response.data;
-  }
+  },
+
+  getFlightManifest: async (flightId) => {
+    const response = await api.get(`/bookings/flight/${flightId}`);
+    return response.data;
+  },
 };

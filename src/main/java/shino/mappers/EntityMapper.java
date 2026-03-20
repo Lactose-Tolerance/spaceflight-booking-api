@@ -33,6 +33,7 @@ public interface EntityMapper {
     @Mapping(source = "flight.arrival", target = "arrival")
     SeatDTO toSeatDTO(Seat seat);
 
+    @Mapping(source = "user.username", target = "passengerName")
     @Mapping(source = "seat.flight.flightNumber", target = "flightNumber")
     @Mapping(target = "origin", expression = "java(booking.getSeat().getFlight().getOrigin().getCode() + \" (\" + booking.getSeat().getFlight().getOrigin().getPlanet().getName() + \")\")")
     @Mapping(target = "destination", expression = "java(booking.getSeat().getFlight().getDestination().getCode() + \" (\" + booking.getSeat().getFlight().getDestination().getPlanet().getName() + \")\")")

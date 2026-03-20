@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { flightService } from '../../../services/flightService';
 import Button from '../../../components/atoms/button/Button';
 import FormField from '../../../components/molecules/form-field/FormField';
@@ -26,6 +27,7 @@ const SEARCH_STATUSES = [
 ];
 
 const AdminFlightOpsPage = () => {
+  const navigate = useNavigate();
   const [flights, setFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -273,6 +275,7 @@ const AdminFlightOpsPage = () => {
                   </td>
                   <td>${flight.economyPrice} / ${flight.businessPrice} / ${flight.firstClassPrice}</td>
                   <td className="action-cells">
+                    <Button variant="primary" onClick={() => navigate(`/admin/flights/${flight.id}/manifest`)} className="sm-btn">Manifest</Button>
                     <Button variant="secondary" onClick={() => openStatusModal(flight)} className="sm-btn">Status</Button>
                     <Button variant="secondary" onClick={() => openPriceModal(flight)} className="sm-btn">Prices</Button>
                     <Button variant="secondary" onClick={() => openDeleteModal(flight)} className="sm-btn delete-btn">Delete</Button>

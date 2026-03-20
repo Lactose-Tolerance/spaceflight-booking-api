@@ -91,4 +91,11 @@ public class BookingService {
 
         return seat;
     }
+
+    public List<Booking> getFlightManifest(Long flightId, boolean isAdmin) {
+        if (!isAdmin) {
+            throw new UnauthorizedActionException("Access Denied: Only administrators can view flight manifests.");
+        }
+        return bookingRepository.findBySeatFlightId(flightId);
+    }
 }

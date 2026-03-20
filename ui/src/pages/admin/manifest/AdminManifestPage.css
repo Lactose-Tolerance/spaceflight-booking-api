@@ -1,0 +1,237 @@
+/* --- Manifest Metrics Dashboard --- */
+.manifest-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-box {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.metric-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-cyan-500);
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* --- Search & Filter Bar --- */
+.manifest-search-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Override bottom margin on FormField inside the search bar */
+.manifest-search-bar .form-field-molecule {
+  margin-bottom: 0;
+}
+
+/* --- Seat Class Badges --- */
+.status-first_class {
+  background: rgba(255, 215, 0, 0.15); /* Gold */
+  color: #ffd700;
+}
+
+.status-business {
+  background: rgba(187, 0, 255, 0.15); /* Purple */
+  color: #bb00ff;
+}
+
+.status-economy {
+  background: rgba(0, 210, 255, 0.15); /* Cyan */
+  color: var(--color-cyan-500);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .manifest-search-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Print Styles (For Flight Crew Hardcopies) --- */
+@media print {
+  /* 1. Hide EVERYTHING that isn't the core manifest content */
+  nav, 
+  aside, 
+  header, 
+  .sidebar, 
+  .admin-sidebar, 
+  .admin-layout-sidebar,
+  .admin-header button,
+  .manifest-search-bar,
+  th:last-child, /* Hides the 'Actions' table header */
+  td:last-child  /* Hides the 'Actions' table cells */ {
+    display: none !important;
+  }
+
+  /* 2. Reset the page layout to take up the full paper width */
+  @page {
+    margin: 1cm; /* Standard clean print margin */
+  }
+
+  body, 
+  #root, 
+  .admin-layout, 
+  .admin-layout-main, 
+  .admin-ops-page {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* 3. Smaller, simpler typography */
+  body, .admin-ops-page, table {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 10pt !important; 
+  }
+
+  h2 {
+    font-size: 14pt !important;
+    margin-bottom: 15px !important;
+    text-align: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+  }
+
+  /* 4. Flatten the Metrics into a simple text row */
+  .manifest-metrics {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    margin-bottom: 15px !important;
+    gap: 0 !important;
+  }
+
+  .metric-box {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 5px !important;
+  }
+
+  .metric-label {
+    font-size: 10pt !important;
+    font-weight: bold !important;
+    color: black !important;
+  }
+
+  .metric-label::after {
+    content: ":";
+  }
+
+  .metric-value {
+    font-size: 10pt !important;
+    font-weight: normal !important;
+  }
+
+  /* 5. Extremely compact data table */
+  .admin-table-container {
+    border: none !important;
+  }
+
+  .admin-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .admin-table th, 
+  .admin-table td {
+    padding: 4px 8px !important; /* Very tight spacing */
+    border: 1px solid #ccc !important;
+    font-size: 9pt !important; /* Smaller text for maximum data density */
+    color: black !important;
+  }
+
+  .admin-table th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    /* Force browsers to print the gray header background */
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important;
+  }
+
+  /* Strip background colors from badges for clean printing */
+  .status-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    color: black !important;
+  }
+
+  /* Prevent page breaks inside the metrics or awkward row splits */
+  .manifest-metrics, tr {
+    page-break-inside: avoid;
+  }
+  
+  /* 6. Swap visual flight card for text-only header */
+  .manifest-flight-card-wrapper {
+    display: none !important;
+  }
+
+  .print-only-flight-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 15px !important;
+    border-bottom: 1px dashed black;
+    padding-bottom: 10px;
+  }
+
+  .print-only-flight-header h3 {
+    margin: 0 0 5px 0 !important;
+    font-size: 12pt !important;
+  }
+
+  .print-only-flight-header p {
+    margin: 0 !important;
+    font-size: 10pt !important;
+    color: #333 !important;
+  }
+}
+
+/* --- Visual Flight Card Wrapper --- */
+.manifest-flight-card-wrapper {
+  margin-bottom: 2rem;
+}
+
+/* Hide the print-only header on the screen */
+.print-only-flight-header {
+  display: none;
+}

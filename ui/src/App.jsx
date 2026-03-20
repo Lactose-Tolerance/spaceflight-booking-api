@@ -13,6 +13,7 @@ import AdminLayout from './components/organisms/admin-layout/AdminLayout';
 import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
 import AdminFlightOpsPage from './pages/admin/flight-ops/AdminFlightOpsPage';
 import AdminPortOpsPage from './pages/admin/port-ops/AdminPortOpsPage';
+import AdminManifestPage from './pages/admin/manifest/AdminManifestPage';
 
 import './styles/global.css';
 
@@ -52,6 +53,7 @@ function App() {
             <Route index element={<AdminDashboard />} /> 
             <Route path="flights" element={<AdminFlightOpsPage />} />
             <Route path="ports" element={<AdminPortOpsPage />} />
+            <Route path="flights/:flightId/manifest" element={<AdminManifestPage />} />
           </Route>
         </Routes>
       </div>

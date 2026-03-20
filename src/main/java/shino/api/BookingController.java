@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import shino.dtos.BoardingPassDTO;
 import shino.dtos.BookingDTO;
-import shino.mappers.EntityMapper;
 import shino.entities.Booking;
 import shino.entities.Seat;
+import shino.mappers.EntityMapper;
 import shino.services.BookingService;
 
 @RestController
@@ -79,5 +79,22 @@ public class BookingController {
             "message", "Booking " + reference + " has been successfully canceled.",
             "freedSeat", freedSeat.getSeatNumber()
         ));
+    }
+    
+    @GetMapping("/flight/{flightId}")
+    public ResponseEntity<List<BookingDTO>> getFlightManifest(
+        @PathVariable Long flightId,
+        @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        boolean isAdmin = userDetails.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        List<Booking> manifest = bookingService.getFlightManifest(flightId, isAdmin);
+        
+        List<BookingDTO> response = manifest.stream()
+            .map(mapper::toBookingDTO)
+            .toList();
+
+        return ResponseEntity.ok(response);
     }
 }
