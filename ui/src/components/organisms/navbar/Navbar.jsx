@@ -47,55 +47,55 @@ const Navbar = () => {
         </div>
 
         {/* Center Navigation Links (Only show if logged in) */}
-        {isAuthenticated && (
-          <div className="navbar-links">
-            {isAdmin ? (
-              // --- Admin Links ---
-              <>
-                <Link 
-                  to="/admin/dashboard" 
-                  className={`nav-link ${location.pathname.includes('/admin/dashboard') ? 'active' : ''}`}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  to="/admin/flights" 
-                  className={`nav-link ${location.pathname.includes('/admin/flights') ? 'active' : ''}`}
-                >
-                  Manage Flights
-                </Link>
-                <Link 
-                  to="/admin/ports" 
-                  className={`nav-link ${location.pathname.includes('/admin/ports') ? 'active' : ''}`}
-                >
-                  Manage Ports
-                </Link>
-              </>
-            ) : (
-              // --- Civilian Links ---
-              <>
-                <Link 
-                  to="/flights" 
-                  className={`nav-link ${location.pathname.includes('/flights') ? 'active' : ''}`}
-                >
-                  Search Flights
-                </Link>
-                <Link 
-                  to="/plan" 
-                  className={`nav-link ${location.pathname.includes('/plan') ? 'active' : ''}`}
-                >
-                  Trip Planner
-                </Link>
+        <div className="navbar-links">
+          {isAuthenticated && isAdmin ? (
+            // --- Admin Links ---
+            <>
+              <Link 
+                to="/admin/dashboard" 
+                className={`nav-link ${location.pathname.includes('/admin/dashboard') ? 'active' : ''}`}
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to="/admin/flights" 
+                className={`nav-link ${location.pathname.includes('/admin/flights') ? 'active' : ''}`}
+              >
+                Manage Flights
+              </Link>
+              <Link 
+                to="/admin/ports" 
+                className={`nav-link ${location.pathname.includes('/admin/ports') ? 'active' : ''}`}
+              >
+                Manage Ports
+              </Link>
+            </>
+          ) : (
+            // --- Civilian Links ---
+            <>
+              <Link 
+                to="/flights" 
+                className={`nav-link ${location.pathname.includes('/flights') ? 'active' : ''}`}
+              >
+                Search Flights
+              </Link>
+              <Link 
+                to="/plan" 
+                className={`nav-link ${location.pathname.includes('/plan') ? 'active' : ''}`}
+              >
+                Trip Planner
+              </Link>
+              {isAuthenticated && (
                 <Link 
                   to="/my-bookings" 
                   className={`nav-link ${location.pathname.includes('/my-bookings') ? 'active' : ''}`}
                 >
                   My Bookings
                 </Link>
-              </>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
+        </div>
 
         {/* Right Side Actions */}
         <div className="navbar-actions">
@@ -106,7 +106,7 @@ const Navbar = () => {
           ) : (
             <div className="auth-links">
               <Button variant="primary" onClick={() => navigate('/auth')}>
-                Sign Up
+                Sign In
               </Button>
             </div>
           )}
