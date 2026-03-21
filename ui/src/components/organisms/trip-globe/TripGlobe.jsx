@@ -1,0 +1,194 @@
+// src/components/organisms/trip-globe/TripGlobe.jsx
+import React, { useRef, useMemo, useState, useEffect } from 'react';
+import Globe from 'react-globe.gl';
+import * as THREE from 'three';
+import Button from '../../atoms/button/Button'; //
+import './TripGlobe.css';
+
+const ALTITUDE_SCALE = 20000; 
+const DEFAULT_SMA = 50000;
+
+const PLANET_CONFIG = {
+  Earth: { texture: '/textures/earth-night.jpg', bump: '/textures/earth-topology.png' },
+  Moon: { texture: '/textures/moon-dark.png', bump: '/textures/moon-bump.jpg' },
+  Mars: { texture: '/textures/mars-dark.jpg', bump: '' }
+};
+
+const generateOrbit = (port) => {
+  const a = (port.semiMajorAxis || DEFAULT_SMA) / ALTITUDE_SCALE;
+  const b = (port.semiMinorAxis || port.semiMajorAxis || DEFAULT_SMA) / ALTITUDE_SCALE;
+  const e = Math.sqrt(Math.max(0, 1 - Math.pow(b / a, 2))); 
+  const inc = (port.inclination || 0) * (Math.PI / 180);
+  const raan = (port.longitude || 0) * (Math.PI / 180);
+  
+  const points = [];
+  const segments = 128; // Increased segments for smoother polar transitions
+  
+  for (let i = 0; i <= segments; i++) {
+    const t = (i / segments) * 2 * Math.PI; 
+    const alt = (a * (1 - e * e)) / (1 + e * Math.cos(t));
+    const r = 1 + alt; 
+    
+    // Orbital plane coordinates
+    const xOrb = r * Math.cos(t);
+    const yOrb = r * Math.sin(t);
+    
+    // 3D Rotations (Inclination then RAAN)
+    const xInc = xOrb;
+    const yInc = yOrb * Math.cos(inc);
+    const zInc = yOrb * Math.sin(inc);
+    
+    const xFinal = xInc * Math.cos(raan) - yInc * Math.sin(raan);
+    const yFinal = xInc * Math.sin(raan) + yInc * Math.cos(raan);
+    const zFinal = zInc;
+    
+    // Coordinate conversion with pole-protection
+    const lat = Math.asin(Math.min(1, Math.max(-1, zFinal / r))) * (180 / Math.PI);
+    let lng = Math.atan2(yFinal, xFinal) * (180 / Math.PI);
+    
+    // Fix for the 180/-180 wrap-around jitter
+    if (points.length > 0) {
+      const prevLng = points[points.length - 1][1];
+      if (lng - prevLng > 180) lng -= 360;
+      if (lng - prevLng < -180) lng += 360;
+    }
+    
+    points.push([lat, lng, alt]);
+  }
+  return points;
+};
+
+const buildTooltip = (d, isOrbital) => `
+  <div style="
+    background: var(--color-bg-overlay); 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    border: 1px solid ${isOrbital ? 'var(--color-cyan-500)' : 'var(--color-cyan-300)'};
+    color: var(--color-text-primary); 
+    font-family: monospace; 
+    pointer-events: none;
+  ">
+    <strong>${d.name}</strong> (${d.code})<br/>
+    <span style="color: var(--color-text-secondary); font-size: 0.8em;">${d.type}</span>
+  </div>
+`;
+
+const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) => {
+  const globeRef = useRef();
+  const containerRef = useRef();
+  const [activePlanet, setActivePlanet] = useState(null); 
+  const [dimensions, setDimensions] = useState({ width: 0, height: 600 });
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      if (entries.length > 0) setDimensions({ width: entries[0].contentRect.width, height: 600 });
+    });
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [activePlanet]);
+
+  const processedPorts = useMemo(() => {
+    const currentPlanetPorts = ports.filter(p => p.planet === activePlanet);
+    return currentPlanetPorts.map(p => {
+      if (p.type === 'ORBITAL') {
+        const path = generateOrbit(p);
+        return { ...p, displayLat: path[0][0], displayLng: path[0][1], displayAlt: path[0][2], orbitPath: path };
+      }
+      return { ...p, displayLat: p.latitude, displayLng: p.longitude, displayAlt: 0 };
+    });
+  }, [ports, activePlanet]);
+
+  const planetaryPorts = useMemo(() => processedPorts.filter(p => p.type === 'PLANETARY'), [processedPorts]);
+  const orbitalPorts = useMemo(() => processedPorts.filter(p => p.type === 'ORBITAL'), [processedPorts]);
+
+  const handlePortClick = (port) => {
+    if (!origin || (origin && destination)) {
+      setOrigin(port.code);
+      setDestination('');
+    } else {
+      setDestination(port.code);
+    }
+  };
+
+  const originPortObj = processedPorts.find(p => p.code === origin);
+  const destPortObj = processedPorts.find(p => p.code === destination);
+  const showArc = originPortObj && destPortObj;
+
+  if (!activePlanet) {
+    return (
+      <div className="system-view">
+        {['Earth', 'Moon', 'Mars'].map(planet => (
+          <div key={planet} className="planet-card" onClick={() => setActivePlanet(planet)}>
+            <div className={`planet-sphere ${planet.toLowerCase()}`}></div>
+            <h3>{planet}</h3>
+            <span className="port-count">{ports.filter(p => p.planet === planet).length} Ports Available</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const config = PLANET_CONFIG[activePlanet];
+
+  return (
+    <div className="globe-container" ref={containerRef}>
+      <div className="globe-back-btn-wrapper">
+        <Button variant="secondary" onClick={() => setActivePlanet(null)}>
+          &larr; Return to System View
+        </Button>
+      </div>
+
+      {dimensions.width > 0 && (
+        <Globe
+          ref={globeRef}
+          width={dimensions.width}
+          height={dimensions.height}
+          backgroundColor="rgba(0,0,0,0)"
+          globeImageUrl={config.texture}
+          bumpImageUrl={config.bump}
+
+          pointsData={planetaryPorts}
+          pointLat="displayLat"
+          pointLng="displayLng"
+          pointAltitude={0.2} 
+          pointRadius={1.5}    
+          pointColor={(d) => d.code === origin ? '#00741f' : d.code === destination ? '#d35b5b' : '#00d2ff'}
+          onPointClick={handlePortClick}
+          pointLabel={(d) => buildTooltip(d, false)}
+
+          objectsData={orbitalPorts}
+          objectLat="displayLat"
+          objectLng="displayLng"
+          objectAltitude="displayAlt"
+          objectThreeObject={(d) => {
+            const isSelected = d.code === origin || d.code === destination;
+            const material = new THREE.MeshBasicMaterial({ color: isSelected ? 0xffffff : 0x00d2ff });
+            const geometry = new THREE.SphereGeometry(3.0, 16, 16);
+            return new THREE.Mesh(geometry, material);
+          }}
+          onObjectClick={handlePortClick}
+          objectLabel={(d) => buildTooltip(d, true)}
+
+          pathsData={orbitalPorts}
+          pathPoints="orbitPath"
+          pathPointLat={p => p[0]}
+          pathPointLng={p => p[1]}
+          pathPointAlt={p => p[2]}
+          pathColor={() => 'rgba(255, 255, 255, 1)'} 
+          pathStroke={2}
+
+          arcsData={showArc ? [{
+            startLat: originPortObj.displayLat, startLng: originPortObj.displayLng,
+            endLat: destPortObj.displayLat, endLng: destPortObj.displayLng,
+          }] : []}
+          arcColor={() => '#fadb5f'}
+          arcDashLength={1}
+          arcDashGap={0}
+          arcAltitudeAutoScale={0.5}
+        />
+      )}
+    </div>
+  );
+};
+
+export default TripGlobe;

@@ -43,6 +43,15 @@
      ========================================= */
   --color-border: #2a2a35;           /* Standard borders */
   --color-border-focus: var(--color-cyan-500); /* Focus rings for accessibility */
+
+  --globe-bg: #030a14;
+  --color-port: #00ffcc;
+  --color-origin-port: #00741f;
+  --color-origin-port: #d35b5b;
+  --color-port-hover: #ffffff;
+  --color-arc-route: #fadb5f;      /* Gold for trajectories */
+  --color-globe-overlay: rgba(10, 25, 47, 0.85);
+  --globe-panel-border: 1px solid rgba(0, 255, 204, 0.3);
 }
 
 /* Base Body Styles to enforce the theme immediately */
