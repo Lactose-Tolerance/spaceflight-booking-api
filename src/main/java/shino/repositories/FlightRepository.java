@@ -1,5 +1,6 @@
 package shino.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -40,4 +41,10 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     );
 
     boolean existsByOriginCodeOrDestinationCode(String origin, String destination);
+
+    List<Flight> findByOrigin_CodeAndDepartureGreaterThanEqualAndStatusInOrderByDepartureAsc(
+        String originCode, 
+        LocalDateTime minDepartureTime, 
+        List<FlightStatus> validStatuses
+    );
 }

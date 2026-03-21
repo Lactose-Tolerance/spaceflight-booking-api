@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/ports/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/planets/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/seats/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
 
                 .requestMatchers(HttpMethod.POST, "/api/ports/**", "/api/flights/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/flights/**").hasRole("ADMIN")

@@ -14,6 +14,9 @@ import AdminFlightOpsPage from './pages/admin/flight-ops/AdminFlightOpsPage';
 import AdminPortOpsPage from './pages/admin/port-ops/AdminPortOpsPage';
 import AdminManifestPage from './pages/admin/manifest/AdminManifestPage';
 import AdminLandingPage from './pages/admin/landing/AdminLandingPage';
+import TripPlanningPage from './pages/trip-planning/TripPlanningPage';
+import TripSeatBookingPage from './pages/trip-seat-booking/TripSeatBookingPage';
+import TripCheckoutPage from './pages/trip-checkout/TripCheckoutPage';
 
 import './styles/global.css';
 
@@ -47,6 +50,10 @@ function App() {
               <BoardingPassPage />
             </ProtectedRoute>
           } />
+
+          <Route path="/plan" element={<TripPlanningPage />} />
+          <Route path="/book-trip" element={<TripSeatBookingPage />} />
+          <Route path="/trip-checkout" element={<ProtectedRoute><TripCheckoutPage /></ProtectedRoute>} />
 
           <Route path="/admin" element={<AdminRoute><AdminLandingPage /></AdminRoute>} />
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />

@@ -81,6 +81,12 @@ const Navbar = () => {
                   Search Flights
                 </Link>
                 <Link 
+                  to="/plan" 
+                  className={`nav-link ${location.pathname.includes('/plan') ? 'active' : ''}`}
+                >
+                  Trip Planner
+                </Link>
+                <Link 
                   to="/my-bookings" 
                   className={`nav-link ${location.pathname.includes('/my-bookings') ? 'active' : ''}`}
                 >

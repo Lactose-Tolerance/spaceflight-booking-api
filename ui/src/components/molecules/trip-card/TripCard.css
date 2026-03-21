@@ -1,0 +1,96 @@
+.trip-card {
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.trip-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.trip-route h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.trip-route span {
+  color: var(--color-cyan);
+  margin: 0 0.5rem;
+}
+
+.trip-price-action {
+  text-align: right;
+}
+
+.trip-price-action h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text-primary);
+}
+
+.text-small {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.trip-toggle {
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  letter-spacing: 1px;
+}
+
+.trip-legs {
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.leg-container {
+  margin-bottom: 1rem;
+}
+
+.leg-indicator {
+  font-size: 0.8rem;
+  color: var(--color-cyan);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Fix for nested FlightCards --- */
+.leg-container {
+  margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Force the nested FlightCard to stay within bounds */
+.trip-legs > .leg-container > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Hide the individual 'Select Flight' buttons */
+.trip-legs .leg-container button {
+  display: none !important;
+}
+
+/* Optional: If your FlightCard has a specific actions container, hide it to reclaim space */
+.trip-legs .leg-container .flight-card-actions {
+  display: none !important;
+}
