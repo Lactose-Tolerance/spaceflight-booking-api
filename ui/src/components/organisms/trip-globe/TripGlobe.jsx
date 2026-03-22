@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import Button from '../../atoms/button/Button'; //
 import './TripGlobe.css';
 
-const ALTITUDE_SCALE = 20000; 
+const ALTITUDE_SCALE = 3000; 
 const DEFAULT_SMA = 50000;
 
 const PLANET_CONFIG = {
@@ -25,9 +25,10 @@ const generateOrbit = (port) => {
   const segments = 128; // Increased segments for smoother polar transitions
   
   for (let i = 0; i <= segments; i++) {
-    const t = (i / segments) * 2 * Math.PI; 
-    const alt = (a * (1 - e * e)) / (1 + e * Math.cos(t));
-    const r = 1 + alt; 
+    const t = (i / segments) * 2 * Math.PI;
+    const r_true = (a * (1 - e * e)) / (1 + e * Math.cos(t));
+    const alt = Math.max(0.01, r_true - 1);
+    const r = r_true; 
     
     // Orbital plane coordinates
     const xOrb = r * Math.cos(t);
@@ -110,10 +111,6 @@ const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) =>
     }
   };
 
-  const originPortObj = processedPorts.find(p => p.code === origin);
-  const destPortObj = processedPorts.find(p => p.code === destination);
-  const showArc = originPortObj && destPortObj;
-
   if (!activePlanet) {
     return (
       <div className="system-view">
@@ -161,9 +158,8 @@ const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) =>
           objectLng="displayLng"
           objectAltitude="displayAlt"
           objectThreeObject={(d) => {
-            const isSelected = d.code === origin || d.code === destination;
-            const material = new THREE.MeshBasicMaterial({ color: isSelected ? 0xffffff : 0x00d2ff });
-            const geometry = new THREE.SphereGeometry(3.0, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ color: d.code === origin ? 0x00741f : d.code === destination ? 0xd35b5b : 0x00d2ff });
+            const geometry = new THREE.SphereGeometry(5.0, 16, 16);
             return new THREE.Mesh(geometry, material);
           }}
           onObjectClick={handlePortClick}
@@ -176,15 +172,6 @@ const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) =>
           pathPointAlt={p => p[2]}
           pathColor={() => 'rgba(255, 255, 255, 1)'} 
           pathStroke={2}
-
-          arcsData={showArc ? [{
-            startLat: originPortObj.displayLat, startLng: originPortObj.displayLng,
-            endLat: destPortObj.displayLat, endLng: destPortObj.displayLng,
-          }] : []}
-          arcColor={() => '#fadb5f'}
-          arcDashLength={1}
-          arcDashGap={0}
-          arcAltitudeAutoScale={0.5}
         />
       )}
     </div>

@@ -35,7 +35,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // We use ONLY your custom configuration source now
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -67,8 +66,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // 1. Explicitly allow your frontend URLs instead of "*"
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        // 1. Explicitly allow frontend URLs instead of "*"
+        // configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://10.63.255.87:5173"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         
         // 2. Add "PATCH" to the list of allowed methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

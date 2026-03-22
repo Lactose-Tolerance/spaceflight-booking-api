@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+const currentHost = window.location.hostname;
 // Create a customized axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api', // Pointing to your Spring Boot server
+  baseURL: `http://${currentHost}:8080/api`, // Pointing to your Spring Boot server
   headers: {
     'Content-Type': 'application/json',
   },
