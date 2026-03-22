@@ -5,8 +5,8 @@ import * as THREE from 'three';
 import Button from '../../atoms/button/Button'; //
 import './TripGlobe.css';
 
-const ALTITUDE_SCALE = 3000; 
-const DEFAULT_SMA = 50000;
+// ALTITUDE_SCALE removed!
+const DEFAULT_SMA = 10000;
 
 const PLANET_CONFIG = {
   Earth: { texture: '/textures/earth-night.jpg', bump: '/textures/earth-topology.png' },
@@ -14,9 +14,10 @@ const PLANET_CONFIG = {
   Mars: { texture: '/textures/mars-dark.jpg', bump: '' }
 };
 
-const generateOrbit = (port) => {
-  const a = (port.semiMajorAxis || DEFAULT_SMA) / ALTITUDE_SCALE;
-  const b = (port.semiMinorAxis || port.semiMajorAxis || DEFAULT_SMA) / ALTITUDE_SCALE;
+// --> CHANGED: Now accepts planetRadiusKm dynamically
+const generateOrbit = (port, planetRadiusKm) => {
+  const a = (port.semiMajorAxis || DEFAULT_SMA) / planetRadiusKm;
+  const b = (port.semiMinorAxis || port.semiMajorAxis || DEFAULT_SMA) / planetRadiusKm;
   const e = Math.sqrt(Math.max(0, 1 - Math.pow(b / a, 2))); 
   const inc = (port.inclination || 0) * (Math.PI / 180);
   const raan = (port.longitude || 0) * (Math.PI / 180);
@@ -74,7 +75,8 @@ const buildTooltip = (d, isOrbital) => `
   </div>
 `;
 
-const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) => {
+// --> CHANGED: Added `planets` to props
+const TripGlobe = ({ ports, planets = [], origin, destination, setOrigin, setDestination }) => {
   const globeRef = useRef();
   const containerRef = useRef();
   const [activePlanet, setActivePlanet] = useState(null); 
@@ -88,16 +90,24 @@ const TripGlobe = ({ ports, origin, destination, setOrigin, setDestination }) =>
     return () => observer.disconnect();
   }, [activePlanet]);
 
+  // --> NEW: Dynamically determine the radius of the planet currently being viewed
+  const currentRadiusKm = useMemo(() => {
+    if (!activePlanet || planets.length === 0) return 6371; // Fallback to Earth
+    const planetData = planets.find(p => p.name.toLowerCase() === activePlanet.toLowerCase());
+    return planetData ? planetData.radiusKm : 6371;
+  }, [activePlanet, planets]);
+
   const processedPorts = useMemo(() => {
     const currentPlanetPorts = ports.filter(p => p.planet === activePlanet);
     return currentPlanetPorts.map(p => {
       if (p.type === 'ORBITAL') {
-        const path = generateOrbit(p);
+        // --> CHANGED: Pass the active planet's radius to the orbit generator
+        const path = generateOrbit(p, currentRadiusKm);
         return { ...p, displayLat: path[0][0], displayLng: path[0][1], displayAlt: path[0][2], orbitPath: path };
       }
       return { ...p, displayLat: p.latitude, displayLng: p.longitude, displayAlt: 0 };
     });
-  }, [ports, activePlanet]);
+  }, [ports, activePlanet, currentRadiusKm]); // Added currentRadiusKm to dependencies
 
   const planetaryPorts = useMemo(() => processedPorts.filter(p => p.type === 'PLANETARY'), [processedPorts]);
   const orbitalPorts = useMemo(() => processedPorts.filter(p => p.type === 'ORBITAL'), [processedPorts]);

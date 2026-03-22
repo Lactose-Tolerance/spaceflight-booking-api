@@ -1,17 +1,17 @@
-// src/pages/trip-planning/TripPlanningPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TripGlobe from '../../components/organisms/trip-globe/TripGlobe'; 
 import TripCard from '../../components/molecules/trip-card/TripCard';
 import Button from '../../components/atoms/button/Button';
-import FormField from '../../components/molecules/form-field/FormField'; // Import the molecule
+import FormField from '../../components/molecules/form-field/FormField';
 import { tripService } from '../../services/tripService';
-import { portService } from '../../services/portService';
+import { portService, planetService } from '../../services/portService';
 import '../trip-planning/TripPlanningPage.css';
 
 const TripPlanningPage = () => {
   const navigate = useNavigate();
   const [ports, setPorts] = useState([]);
+  const [planets, setPlanets] = useState([]);
   const [origin, setOrigin] = useState(''); 
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('2026-03-23');
@@ -21,15 +21,19 @@ const TripPlanningPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchPorts = async () => {
+    const fetchData = async () => {
       try {
-        const data = await portService.getAllPorts();
-        setPorts(data);
+        const [portsData, planetsData] = await Promise.all([
+          portService.getAllPorts(),
+          planetService.getAllPlanets()
+        ]);
+        setPorts(portsData);
+        setPlanets(planetsData);
       } catch (err) {
-        console.error("Failed to load ports", err);
+        console.error("Failed to load data", err);
       }
     };
-    fetchPorts();
+    fetchData();
   }, []);
 
   const handleSearch = async () => {
@@ -66,6 +70,7 @@ const TripPlanningPage = () => {
       {ports.length > 0 && (
         <TripGlobe 
           ports={ports}
+          planets={planets}
           origin={origin}
           destination={destination}
           setOrigin={setOrigin}
@@ -73,13 +78,12 @@ const TripPlanningPage = () => {
         />
       )}
 
-      {/* Control Panel using FormField Molecules */}
       <div className="trip-control-panel">
         
         <FormField
           id="origin-port"
           label="Origin Port"
-          list="ports-list" // Passed down to the input atom via ...inputProps
+          list="ports-list"
           value={origin}
           onChange={(e) => setOrigin(e.target.value.toUpperCase())}
           placeholder="Type Name or Code..."
