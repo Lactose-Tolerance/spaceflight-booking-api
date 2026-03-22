@@ -12,5 +12,7 @@ public record PortRequestDTO(
         Double longitude,
         Double semiMajorAxis,
         Double semiMinorAxis,
-        Double inclination
+        Double inclination,
+        Double argumentOfPeriapsis,
+        Double rightAscension
 ) {}

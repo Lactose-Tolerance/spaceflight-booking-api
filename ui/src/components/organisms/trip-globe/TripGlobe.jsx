@@ -14,41 +14,50 @@ const PLANET_CONFIG = {
   Mars: { texture: '/textures/mars-dark.jpg', bump: '' }
 };
 
-// --> CHANGED: Now accepts planetRadiusKm dynamically
 const generateOrbit = (port, planetRadiusKm) => {
   const a = (port.semiMajorAxis || DEFAULT_SMA) / planetRadiusKm;
   const b = (port.semiMinorAxis || port.semiMajorAxis || DEFAULT_SMA) / planetRadiusKm;
   const e = Math.sqrt(Math.max(0, 1 - Math.pow(b / a, 2))); 
+  
+  // Convert Keplerian elements to radians
   const inc = (port.inclination || 0) * (Math.PI / 180);
-  const raan = (port.longitude || 0) * (Math.PI / 180);
+  const raan = (port.rightAscension || port.longitude || 0) * (Math.PI / 180); // Fallback to longitude for legacy ports
+  const argPerp = (port.argumentOfPeriapsis || 0) * (Math.PI / 180);
   
   const points = [];
-  const segments = 128; // Increased segments for smoother polar transitions
+  const segments = 128; 
   
   for (let i = 0; i <= segments; i++) {
-    const t = (i / segments) * 2 * Math.PI;
+    const t = (i / segments) * 2 * Math.PI; // True anomaly
+    
+    // 1. Distance from focal point
     const r_true = (a * (1 - e * e)) / (1 + e * Math.cos(t));
     const alt = Math.max(0.01, r_true - 1);
     const r = r_true; 
     
-    // Orbital plane coordinates
-    const xOrb = r * Math.cos(t);
-    const yOrb = r * Math.sin(t);
+    // 2. Base 2D Orbital Plane (Flat)
+    const xBase = r * Math.cos(t);
+    const yBase = r * Math.sin(t);
     
-    // 3D Rotations (Inclination then RAAN)
-    const xInc = xOrb;
-    const yInc = yOrb * Math.cos(inc);
-    const zInc = yOrb * Math.sin(inc);
+    // 3. Rotate by Argument of Periapsis (w) within the orbital plane
+    const xArg = xBase * Math.cos(argPerp) - yBase * Math.sin(argPerp);
+    const yArg = xBase * Math.sin(argPerp) + yBase * Math.cos(argPerp);
     
+    // 4. Rotate by Inclination (i) around the X-axis
+    const xInc = xArg;
+    const yInc = yArg * Math.cos(inc);
+    const zInc = yArg * Math.sin(inc);
+    
+    // 5. Rotate by RAAN (Omega) around the Z-axis (Equatorial plane)
     const xFinal = xInc * Math.cos(raan) - yInc * Math.sin(raan);
     const yFinal = xInc * Math.sin(raan) + yInc * Math.cos(raan);
     const zFinal = zInc;
     
-    // Coordinate conversion with pole-protection
+    // 6. Convert final 3D Cartesian back to Spherical (Lat/Lng)
     const lat = Math.asin(Math.min(1, Math.max(-1, zFinal / r))) * (180 / Math.PI);
     let lng = Math.atan2(yFinal, xFinal) * (180 / Math.PI);
     
-    // Fix for the 180/-180 wrap-around jitter
+    // Anti-jitter logic for 180/-180 wrap-around
     if (points.length > 0) {
       const prevLng = points[points.length - 1][1];
       if (lng - prevLng > 180) lng -= 360;

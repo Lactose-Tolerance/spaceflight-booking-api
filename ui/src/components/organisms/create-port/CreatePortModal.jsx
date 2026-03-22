@@ -1,3 +1,4 @@
+// src/components/organisms/create-port/CreatePortModal.jsx
 import React, { useState, useEffect } from 'react';
 import Modal from '../modal/Modal';
 import FormField from '../../molecules/form-field/FormField';
@@ -8,9 +9,12 @@ const CreatePortModal = ({ isOpen, onClose, onPortCreated }) => {
   const [planets, setPlanets] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Added argumentOfPeriapsis and rightAscension to initial state
   const initialFormState = {
     code: '', name: '', country: '', planetName: '', type: 'PLANETARY',
-    latitude: '', longitude: '', semiMajorAxis: '', semiMinorAxis: '', inclination: ''
+    latitude: '', longitude: '', 
+    semiMajorAxis: '', semiMinorAxis: '', inclination: '',
+    argumentOfPeriapsis: '', rightAscension: ''
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -40,11 +44,17 @@ const CreatePortModal = ({ isOpen, onClose, onPortCreated }) => {
         country: formData.country,
         planetName: formData.planetName,
         type: formData.type,
+        
+        // Parse planetary coordinates
         latitude: formData.type === 'PLANETARY' && formData.latitude !== '' ? parseFloat(formData.latitude) : null,
         longitude: formData.type === 'PLANETARY' && formData.longitude !== '' ? parseFloat(formData.longitude) : null,
+        
+        // Parse the 5 Keplerian orbital elements
         semiMajorAxis: formData.type === 'ORBITAL' && formData.semiMajorAxis !== '' ? parseFloat(formData.semiMajorAxis) : null,
         semiMinorAxis: formData.type === 'ORBITAL' && formData.semiMinorAxis !== '' ? parseFloat(formData.semiMinorAxis) : null,
-        inclination: formData.type === 'ORBITAL' && formData.inclination !== '' ? parseFloat(formData.inclination) : null
+        inclination: formData.type === 'ORBITAL' && formData.inclination !== '' ? parseFloat(formData.inclination) : null,
+        argumentOfPeriapsis: formData.type === 'ORBITAL' && formData.argumentOfPeriapsis !== '' ? parseFloat(formData.argumentOfPeriapsis) : null,
+        rightAscension: formData.type === 'ORBITAL' && formData.rightAscension !== '' ? parseFloat(formData.rightAscension) : null
       };
 
       await portService.createPort(formattedPayload);
@@ -107,12 +117,25 @@ const CreatePortModal = ({ isOpen, onClose, onPortCreated }) => {
           </div>
         )}
 
+        {/* Grouped into pairs of two to prevent horizontal cramping */}
         {formData.type === 'ORBITAL' && (
-          <div className="port-row-thirds">
-            <FormField id="semiMajorAxis" label="Semi-Major Axis" type="number" value={formData.semiMajorAxis} onChange={handleChange} />
-            <FormField id="semiMinorAxis" label="Semi-Minor Axis" type="number" value={formData.semiMinorAxis} onChange={handleChange} />
-            <FormField id="inclination" label="Inclination" type="number" value={formData.inclination} onChange={handleChange} />
-          </div>
+          <>
+            <div className="port-row-halves">
+              <FormField id="semiMajorAxis" label="Semi-Major Axis" type="number" value={formData.semiMajorAxis} onChange={handleChange} />
+              <FormField id="semiMinorAxis" label="Semi-Minor Axis" type="number" value={formData.semiMinorAxis} onChange={handleChange} />
+            </div>
+            
+            <div className="port-row-halves">
+              <FormField id="inclination" label="Inclination (°)" type="number" value={formData.inclination} onChange={handleChange} />
+              <FormField id="argumentOfPeriapsis" label="Arg. of Periapsis (°)" type="number" value={formData.argumentOfPeriapsis} onChange={handleChange} />
+            </div>
+
+            <div className="port-row-halves">
+              <FormField id="rightAscension" label="Right Ascension (RAAN °)" type="number" value={formData.rightAscension} onChange={handleChange} />
+              {/* Empty div to keep the grid aligned to the left */}
+              <div></div> 
+            </div>
+          </>
         )}
 
       </div>

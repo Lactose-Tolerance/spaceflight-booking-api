@@ -51,7 +51,8 @@ public class PortService {
         Port newPort = new Port(
             request.code(), request.name(), request.country(), planetEntity,
             Port.getPortType(request.type()), request.latitude(), request.longitude(),
-            request.semiMajorAxis(), request.semiMinorAxis(), request.inclination()
+            request.semiMajorAxis(), request.semiMinorAxis(), request.inclination(),
+            request.argumentOfPeriapsis(), request.rightAscension()
         );
 
         return portRepository.save(newPort);

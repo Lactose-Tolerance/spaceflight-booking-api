@@ -14,7 +14,9 @@ CREATE TABLE port (
     longitude DOUBLE PRECISION,
     semi_major_axis DOUBLE PRECISION,
     semi_minor_axis DOUBLE PRECISION,
-    inclination DOUBLE PRECISION
+    inclination DOUBLE PRECISION,
+    argument_of_periapsis DOUBLE PRECISION,
+    right_ascension DOUBLE PRECISION
 );
 
 CREATE TABLE users (

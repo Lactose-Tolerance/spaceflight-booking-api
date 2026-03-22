@@ -64,15 +64,15 @@ public class DatabaseSeeder implements CommandLineRunner {
             
             planetRepository.saveAll(List.of(earth, mars, moon));
 
-            Port kennedy = new Port("KNDUS", "Kennedy Space Center", "United States of America", earth, PortType.PLANETARY, 28.5721, -80.6480, null, null, null);
-            Port vandenberg = new Port("VSFUS", "Vandenberg Space Force Base", "United States of America", earth, PortType.PLANETARY, 34.7420, -120.5724, null, null, null);
-            Port baikonur = new Port("BAIRS", "Baikonur Cosmodrome", "Russia", earth, PortType.PLANETARY, 46.0681, 63.3159, null, null, null);
-            Port wenchang = new Port("WENCN", "Wenchang Spacecraft Launch Site", "China", earth, PortType.PLANETARY, 19.6167, 109.7500, null, null, null);
-            Port guiana = new Port("GUIFR", "Guiana Space Centre", "France", earth, PortType.PLANETARY, 5.2333, -52.7667, null, null, null);
-            Port artemis = new Port("ARTUS", "Artemis Base Station", "United States of America", moon, PortType.PLANETARY, -89.5273, 209.9762, null, null, null);
-            Port lanyue = new Port("LNYCN", "Lanyue Spaceport", "China", moon, PortType.PLANETARY, -84.2512, 60.7011, null, null, null);
-            Port lunar = new Port("LGTWY", "Lunar Gateway", "International", moon, PortType.ORBITAL, null, null, 38200.0, 16000.0, 89.873);
-            Port martian = new Port("MGTWY", "Martian Gateway", "International", mars, PortType.ORBITAL, null, null, 20370.0, 11630.0, 89.981);
+            Port kennedy = new Port("KNDUS", "Kennedy Space Center", "United States of America", earth, PortType.PLANETARY, 28.5721, -80.6480, null, null, null, null, null);
+            Port vandenberg = new Port("VSFUS", "Vandenberg Space Force Base", "United States of America", earth, PortType.PLANETARY, 34.7420, -120.5724, null, null, null, null, null);
+            Port baikonur = new Port("BAIRS", "Baikonur Cosmodrome", "Russia", earth, PortType.PLANETARY, 46.0681, 63.3159, null, null, null, null, null);
+            Port wenchang = new Port("WENCN", "Wenchang Spacecraft Launch Site", "China", earth, PortType.PLANETARY, 19.6167, 109.7500, null, null, null, null, null);
+            Port guiana = new Port("GUIFR", "Guiana Space Centre", "France", earth, PortType.PLANETARY, 5.2333, -52.7667, null, null, null, null, null);
+            Port artemis = new Port("ARTUS", "Artemis Base Station", "United States of America", moon, PortType.PLANETARY, -89.5273, 209.9762, null, null, null, null, null);
+            Port lanyue = new Port("LNYCN", "Lanyue Spaceport", "China", moon, PortType.PLANETARY, -84.2512, 60.7011, null, null, null, null, null);
+            Port lunar = new Port("LGTWY", "Lunar Gateway", "International", moon, PortType.ORBITAL, null, null, 38200.0, 16000.0, 89.873, 265.0, 45.0);
+            Port martian = new Port("MGTWY", "Martian Gateway", "International", mars, PortType.ORBITAL, null, null, 20370.0, 11630.0, 89.981, 40.5, 30.0);
 
             List<Port> allPorts = List.of(kennedy, vandenberg, baikonur, wenchang, guiana, artemis, lanyue, lunar, martian);
             portRepository.saveAll(allPorts);

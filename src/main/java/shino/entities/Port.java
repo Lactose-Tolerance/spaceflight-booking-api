@@ -45,10 +45,12 @@ public class Port {
     private Double semiMajorAxis;
     private Double semiMinorAxis;
     private Double inclination;
+    private Double argumentOfPeriapsis;
+    private Double rightAscension;
 
     public Port() {}
 
-    public Port(String code, String name, String country, Planet planet, PortType type, Double latitude, Double longitude, Double semiMajorAxis, Double semiMinorAxis, Double inclination) {
+    public Port(String code, String name, String country, Planet planet, PortType type, Double latitude, Double longitude, Double semiMajorAxis, Double semiMinorAxis, Double inclination, Double argumentOfPeriapsis, Double rightAscension) {
         this.code = code;
         this.name = name;
         this.country = country;
@@ -59,6 +61,8 @@ public class Port {
         this.semiMajorAxis = semiMajorAxis;
         this.semiMinorAxis = semiMinorAxis;
         this.inclination = inclination;
+        this.argumentOfPeriapsis = argumentOfPeriapsis;
+        this.rightAscension = rightAscension;
     }
 
     public String getCode() { return code; }
@@ -71,6 +75,8 @@ public class Port {
     public Double getSemiMajorAxis() { return semiMajorAxis; }
     public Double getSemiMinorAxis() { return semiMinorAxis; }
     public Double getInclination() { return inclination; }
+    public Double getArgumentOfPeriapsis() { return argumentOfPeriapsis; }
+    public Double getRightAscension() { return rightAscension; }
     
     public void setCode(String code) { this.code = code; }
     public void setName(String name) { this.name = name; }
@@ -82,4 +88,6 @@ public class Port {
     public void setSemiMajorAxis(Double semiMajorAxis) { this.semiMajorAxis = semiMajorAxis; }
     public void setSemiMinorAxis(Double semiMinorAxis) { this.semiMinorAxis = semiMinorAxis; }
     public void setInclination(Double inclination) { this.inclination = inclination; }
+    public void setArgumentOfPeriapsis(Double argumentOfPeriapsis) { this.argumentOfPeriapsis = argumentOfPeriapsis; }
+    public void setRightAscension(Double rightAscension) { this.rightAscension = rightAscension; }
 }
